@@ -21,7 +21,8 @@ export class JiraService {
             const response = await this.client.get('/rest/api/3/project');
             return response.data;
         } catch (error) {
-            throw new Error(`Could not fetch projects: ${(error as Error).message}`);
+            console.error("🚫 Could not fetch projects:", error);
+            return [];
         }
     }
 
@@ -30,7 +31,8 @@ export class JiraService {
             const response = await this.client.get(`/rest/api/3/search?jql=project=${projectKey}`);
             return response.data.issues;
         } catch (error) {
-            throw new Error(`Could not fetch issues: ${(error as Error).message}`);
+            console.error(`🚫 Could not fetch issues for project ${projectKey}:`, error);
+            return [];
         }
     }
 
@@ -52,13 +54,14 @@ export class JiraService {
 
     async updateIssue(issueKey: string, summary: string, description: string, issueType: string) {
         try {
-            await this.client.put(`/rest/api/3/issue/${issueKey}`, {
+            const response = await this.client.put(`/rest/api/3/issue/${issueKey}`, {
                 fields: {
                     summary,
                     description,
                     issuetype: { name: issueType },
                 },
             });
+            return response.data;
         } catch (error) {
             throw new Error(`Could not update issue: ${(error as Error).message}`);
         }
@@ -66,7 +69,8 @@ export class JiraService {
 
     async deleteIssue(issueKey: string) {
         try {
-            await this.client.delete(`/rest/api/3/issue/${issueKey}`);
+            const response = await this.client.delete(`/rest/api/3/issue/${issueKey}`);
+            return response.data;
         } catch (error) {
             throw new Error(`Could not delete issue: ${(error as Error).message}`);
         }
@@ -74,22 +78,14 @@ export class JiraService {
 
     async addComment(issueKey: string, comment: string) {
         try {
-            await this.client.post(`/rest/api/3/issue/${issueKey}/comment`, {
-                body: {
-                    type: 'doc',
-                    version: 1,
-                    content: [
-                        {
-                            type: 'paragraph',
-                            content: [{ type: 'text', text: comment }],
-                        },
-                    ],
-                },
+            const response = await this.client.post(`/rest/api/3/issue/${issueKey}/comment`, {
+                body: comment,
             });
+            return response.data;
         } catch (error) {
             throw new Error(`Could not add comment: ${(error as Error).message}`);
         }
     }
 }
 
-export default new JiraService();
+export default JiraService;
