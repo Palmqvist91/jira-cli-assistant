@@ -1,0 +1,48 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "baseUrl": ".",
+        "paths": {
+            "@client/*": [
+                "./src/client/*"
+            ],
+            "@server/*": [
+                "./src/server/*"
+            ],
+            "@root/*": [
+                "./*"
+            ],
+            "@test/*": [
+                "test/*"
+            ],
+            "@types/*": [
+                "server/types/*"
+            ]
+        },
+        "resolveJsonModule": true,
+        "rootDir": "."
+    },
+    "ts-node": {
+        "require": [
+            "tsconfig-paths/register"
+        ],
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "tailwind.config.ts"
+    ]
+}
