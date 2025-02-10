@@ -2,15 +2,13 @@
   "name": "jira-cli-assistant",
   "version": "1.0.0",
   "description": "A CLI tool to interact with JIRA API using TypeScript",
-  "main": "src/index.ts",
+  "main": "dist/server/index.js",
+  "bin": {
+    "jira-cli": "./dist/server/index.js"
+  },
   "scripts": {
-    "start": "npx ts-node src/server/index.ts",
-    "jira:projects": "npx ts-node -r tsconfig-paths/register src/server/index.ts projects",
-    "jira:issues": "npx ts-node -r tsconfig-paths/register src/server/index.ts list",
-    "jira:create": "npx ts-node -r tsconfig-paths/register src/server/index.ts create",
-    "jira:update": "npx ts-node -r tsconfig-paths/register src/server/index.ts update",
-    "jira:delete": "npx ts-node -r tsconfig-paths/register src/server/index.ts delete",
-    "jira:comment": "npx ts-node -r tsconfig-paths/register src/server/index.ts comment"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "axios": "^1.7.9",

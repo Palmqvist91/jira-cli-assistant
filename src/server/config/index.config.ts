@@ -1,0 +1,26 @@
+import os from "os";
+import fs from "fs";
+import path from "path";
+import inquirer from "inquirer";
+
+const configFilePath = path.join(os.homedir(), ".jira-cli-config.json");
+
+export async function setupConfig() {
+    console.log("🔧 Running setupConfig...");
+    const answers = await inquirer.prompt([
+        { type: "input", name: "jiraUrl", message: "Enter your JIRA URL (e.g., https://yourcompany.atlassian.net):" },
+        { type: "input", name: "jiraEmail", message: "Enter your JIRA email:" },
+        { type: "password", name: "jiraToken", message: "Enter your JIRA API token:" }
+    ]);
+
+    fs.writeFileSync(configFilePath, JSON.stringify(answers, null, 2));
+    console.log(`✅ Configuration saved to ${configFilePath}`);
+}
+
+export function getConfig() {
+    if (!fs.existsSync(configFilePath)) {
+        console.error("🚫 No configuration found. Please run `jira-cli config` to set up your environment.");
+        process.exit(1);
+    }
+    return JSON.parse(fs.readFileSync(configFilePath, "utf-8"));
+}

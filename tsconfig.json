@@ -28,7 +28,7 @@
             ]
         },
         "resolveJsonModule": true,
-        "rootDir": "."
+        "rootDir": "src"
     },
     "ts-node": {
         "require": [

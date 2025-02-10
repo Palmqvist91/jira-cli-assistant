@@ -1,19 +1,29 @@
 import axios, { AxiosInstance } from 'axios';
 import dotenv from 'dotenv';
+import { getConfig } from '../config/index.config';
 
 dotenv.config();
+
+const ENVIRONMENT = process.env.ENVIRONMENT;
 
 export class JiraService {
     private client: AxiosInstance;
 
-    constructor() {
-        this.client = axios.create({
-            baseURL: process.env.JIRA_URL,
-            auth: {
-                username: process.env.JIRA_EMAIL as string,
-                password: process.env.JIRA_API_TOKEN as string,
-            },
-        });
+    constructor(skipConfigCheck: boolean = false) {
+        if (!skipConfigCheck) {
+            const config = getConfig();
+            if (!config && process.env.ENVIRONMENT !== 'development') {
+                throw new Error('No configuration found. Please run `jira-cli config` to set up your environment.');
+            }
+
+            this.client = axios.create({
+                baseURL: ENVIRONMENT === 'development' ? process.env.JIRA_URL : config?.jiraUrl,
+                auth: {
+                    username: ENVIRONMENT === 'development' ? process.env.JIRA_EMAIL : config?.jiraEmail,
+                    password: ENVIRONMENT === 'development' ? process.env.JIRA_API_TOKEN : config?.jiraToken,
+                },
+            });
+        }
     }
 
     async fetchProjects() {
