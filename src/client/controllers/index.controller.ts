@@ -1,1 +1,0 @@
-export { homeController } from "./home.controller";

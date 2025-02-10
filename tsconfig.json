@@ -14,9 +14,6 @@
         "strictPropertyInitialization": false,
         "baseUrl": ".",
         "paths": {
-            "@client/*": [
-                "./src/client/*"
-            ],
             "@server/*": [
                 "./src/server/*"
             ],
@@ -36,7 +33,7 @@
     "ts-node": {
         "require": [
             "tsconfig-paths/register"
-        ],
+        ]
     },
     "include": [
         "src/**/*"

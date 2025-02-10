@@ -1,17 +1,11 @@
-import express from "express";
 import dotenv from "dotenv";
-import { engine } from 'express-handlebars';
-import { apiRouter, viewRouter } from "@server/routes/index.routes";
-import path from "path";
 import { program } from "commander";
-import {
-    listIssuesCommand,
-    createIssueCommand,
-    updateIssueCommand,
-    deleteIssueCommand,
-    addCommentCommand,
-    listProjectsCommand
-} from "@server/commands/index.command";
+import { listProjectsCommand } from "./commands/listProjects.command";
+import { listIssuesCommand } from "./commands/listIssues.command";
+import { createIssueCommand } from "./commands/createIssue.command";
+import { updateIssueCommand } from "./commands/updateIssue.command";
+import { deleteIssueCommand } from "./commands/deleteIssue.command";
+import { addCommentCommand } from "./commands/addComment.command";
 
 dotenv.config();
 
@@ -20,62 +14,50 @@ program
     .version("1.0.0")
     .description("A CLI tool for Jira");
 
-// List projects
+// List projects npm run jira:projects
 program
-    .command('projects')
-    .description('Lists all JIRA projects')
+    .command("projects")
+    .description("Lists all JIRA projects")
     .action(listProjectsCommand);
 
-// List issues
+// List issues npm run jira:issues <projectKey>
 program
-    .command('list <projectKey>')
-    .description('Lists open issues for a specific JIRA project')
-    .action(listIssuesCommand);
+    .command("list <projectKey>")
+    .description("Lists open issues for a specific JIRA project")
+    .action((projectKey: string) => {
+        listIssuesCommand(projectKey);
+    });
 
-// Create a new issue
+// Create a new issue npm run jira:create <projectKey>
 program
-    .command('create <projectKey>')
-    .description('Creates a new issue in a specific project')
-    .action(createIssueCommand);
+    .command("create <projectKey>")
+    .description("Creates a new issue in a specific project")
+    .action((projectKey: string) => {
+        createIssueCommand(projectKey);
+    });
 
-// Update an issue
+// Update an issue npm run jira:update <issueKey>
 program
-    .command('update <issueKey>')
-    .description('Updates a specific issue')
-    .action(updateIssueCommand);
+    .command("update <issueKey>")
+    .description("Updates a specific issue")
+    .action((issueKey: string) => {
+        updateIssueCommand(issueKey);
+    });
 
-// Delete an issue
+// Delete an issue npm run jira:delete <issueKey>
 program
-    .command('delete <issueKey>')
-    .description('Deletes a specific issue')
-    .action(deleteIssueCommand);
+    .command("delete <issueKey>")
+    .description("Deletes a specific issue")
+    .action((issueKey: string) => {
+        deleteIssueCommand(issueKey);
+    });
 
-// Add comment
+// Add comment npm run jira:comment <issueKey>
 program
-    .command('comment <issueKey>')
-    .description('Adds a comment to a specific issue')
-    .action(addCommentCommand);
+    .command("comment <issueKey>")
+    .description("Adds a comment to a specific issue")
+    .action((issueKey: string) => {
+        addCommentCommand(issueKey);
+    });
 
 program.parse(process.argv);
-
-const port = process.env.PORT || 3000;
-const app = express();
-
-app.engine('hbs', engine({
-    extname: '.hbs',
-    layoutsDir: path.join(__dirname, '../client/views/layouts'),
-    defaultLayout: 'main',
-}));
-app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, '../client/views'));
-
-app.use(express.static(path.join(__dirname, '../client/views/public')));
-
-app.use('/', viewRouter);
-app.use('/api', apiRouter);
-
-app.listen(port, () => {
-    console.log(`Server is running on port http://localhost:${port}`);
-});
-
-export { app };
