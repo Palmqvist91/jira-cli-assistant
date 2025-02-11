@@ -17,7 +17,7 @@ export async function allProjectsCommand() {
         const columnWidths = [
             10,  // Index width
             15,  // Key width
-            30, // Name width
+            60, // Name width
             10  // Lead width
         ];
 
@@ -35,7 +35,7 @@ export async function allProjectsCommand() {
                 if (i === 0) {
                     return cellStr.padEnd(15);
                 } else if (i === 1) {
-                    return cellStr.padEnd(30);
+                    return cellStr.padEnd(60);
                 } else {
                     return cellStr;
                 }

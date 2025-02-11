@@ -7,7 +7,7 @@ export async function listProjectIssuesCommand(projectKey: string) {
         const jiraService = new JiraService();
         const key = await getProjectKey(projectKey);
         console.log(`📂 Fetching issues for project: ${key}`);
-        const issues = await jiraService.fetchIssues(key);
+        const issues = await jiraService.fetchProjectIssues(key);
         if (issues.length === 0) {
             console.log("✅ No open issues found.");
             return;
