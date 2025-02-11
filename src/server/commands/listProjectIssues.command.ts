@@ -28,7 +28,7 @@ export async function listProjectIssuesCommand(projectKey: string) {
         });
 
         const headers = ['Index', 'Key', 'Summary', 'Status', 'Assignee'];
-        const columnWidths = [10, 15, 45, 15, 20];
+        const columnWidths = [10, 15, 45, 25, 20];
 
         const formattedData = issues.map((issue: any) => [
             issue.key,
@@ -47,7 +47,7 @@ export async function listProjectIssuesCommand(projectKey: string) {
                 } else if (i === 1) {
                     return cellStr.padEnd(45);
                 } else if (i === 2) {
-                    return cellStr.padEnd(15);
+                    return cellStr.padEnd(25);
                 } else {
                     return cellStr;
                 }
