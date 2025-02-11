@@ -158,5 +158,4 @@ export class JiraService {
     }
 }
 
-
 export default JiraService;

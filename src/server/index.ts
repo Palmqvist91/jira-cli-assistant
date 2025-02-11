@@ -21,7 +21,7 @@ program
 program
     .action(() => {
         console.log(`
-            Welcome to the Jira CLI Assistant!
+            Welcome to the Jira CLI Assistant! 🚀
 
             Here are some example commands you can run:
             - jira projects              List all projects
@@ -31,11 +31,11 @@ program
             - jira delete <issueKey>     Delete an issue
 
             For more information, run:
-            jira --help 
+            jira --help
         `);
     });
 
-// Move config command to be first
+// Set up your JIRA configuration
 program
     .command("config")
     .description("Set up your JIRA configuration")

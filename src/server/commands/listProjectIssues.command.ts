@@ -42,13 +42,13 @@ export async function listProjectIssuesCommand(projectKey: string) {
             const indexCol = chalk.white(`[${indexNum.toString().padStart(1)}]`.padEnd(10));
             const formattedRow = row.map((cell: any, i: number) => {
                 const cellStr = String(cell || '');
-                if (i === 0) { // Key
+                if (i === 0) {
                     return cellStr.padEnd(15);
-                } else if (i === 1) { // Summary
+                } else if (i === 1) {
                     return cellStr.padEnd(45);
-                } else if (i === 2) { // Status
+                } else if (i === 2) {
                     return cellStr.padEnd(15);
-                } else { // Assignee
+                } else {
                     return cellStr;
                 }
             }).join('');

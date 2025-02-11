@@ -15,10 +15,10 @@ export async function allProjectsCommand() {
 
         const headers = ['Index', 'Key', 'Name', 'Lead'];
         const columnWidths = [
-            10,  // Index width
-            15,  // Key width
-            60, // Name width
-            10  // Lead width
+            10,
+            15,
+            45,
+            10
         ];
 
         const formattedData = projects.map((project: any) => [
@@ -35,7 +35,7 @@ export async function allProjectsCommand() {
                 if (i === 0) {
                     return cellStr.padEnd(15);
                 } else if (i === 1) {
-                    return cellStr.padEnd(60);
+                    return cellStr.padEnd(45);
                 } else {
                     return cellStr;
                 }
