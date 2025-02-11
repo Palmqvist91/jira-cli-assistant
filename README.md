@@ -6,7 +6,17 @@
 
   ```bash
   npm install
-  npm start
+  ```
+  ## Useful commands
+
+  ```bash
+  npm run build
+  npm install -g .
+  npm uninstall -g jira-cli-assistant
+  which jira-cli
+  jira-cli
+  jira-cli config
+
   ```
 
   ## Project Structure
