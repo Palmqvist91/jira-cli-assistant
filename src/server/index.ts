@@ -24,7 +24,7 @@ program
             Welcome to the Jira CLI Assistant! 🚀
 
             Here are some example commands you can run:
-            - jira projects              List all projects
+            - jira project              List all projects
             - jira list <projectKey>     List open issues for a project
             - jira create <projectKey>   Create a new issue
             - jira update <issueKey>     Update an existing issue
