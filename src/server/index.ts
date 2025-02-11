@@ -24,14 +24,14 @@ program
             Welcome to the Jira CLI Assistant!
 
             Here are some example commands you can run:
-            - jira-cli projects              List all projects
-            - jira-cli list <projectKey>     List open issues for a project
-            - jira-cli create <projectKey>   Create a new issue
-            - jira-cli update <issueKey>     Update an existing issue
-            - jira-cli delete <issueKey>     Delete an issue
+            - jira projects              List all projects
+            - jira list <projectKey>     List open issues for a project
+            - jira create <projectKey>   Create a new issue
+            - jira update <issueKey>     Update an existing issue
+            - jira delete <issueKey>     Delete an issue
 
             For more information, run:
-            jira-cli --help 
+            jira --help 
         `);
     });
 
@@ -56,12 +56,8 @@ program
 program
     .command("list [projectKey]")
     .description("Lists open issues for a specific JIRA project")
-    .action(async (projectKey?: string) => {
-        if (projectKey) {
-            await listProjectIssuesCommand(projectKey);
-        } else {
-            console.log("🚫 Please provide a project key.");
-        }
+    .action(async (projectKey: string) => {
+        await listProjectIssuesCommand(projectKey);
     });
 
 // Create a new issue

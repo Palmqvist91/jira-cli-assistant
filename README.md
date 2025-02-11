@@ -41,32 +41,32 @@ After installation, you can use the following commands:
 
 - **Configure Jira**:
   ```bash
-  jira-cli config
+  jira config
   ```
 
 - **List all projects**:
   ```bash
-  jira-cli projects
+  jira projects
   ```
 
 - **List issues for a project**:
   ```bash
-  jira-cli list <projectKey>
+  jira list <projectKey>
   ```
 
 - **Create a new issue**:
   ```bash
-  jira-cli create <projectKey>
+  jira create <projectKey>
   ```
 
 - **Update an issue**:
   ```bash
-  jira-cli update <issueKey>
+  jira update <issueKey>
   ```
 
 - **Delete an issue**:
   ```bash
-  jira-cli delete <issueKey>
+  jira delete <issueKey>
   ```
 
 ## Project Structure

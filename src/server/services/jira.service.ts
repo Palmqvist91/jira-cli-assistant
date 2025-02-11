@@ -1,5 +1,5 @@
-import axios, { AxiosInstance } from 'axios';
 import dotenv from 'dotenv';
+import axios, { AxiosInstance } from 'axios';
 import { getConfig } from '../config/index.config';
 
 dotenv.config();
