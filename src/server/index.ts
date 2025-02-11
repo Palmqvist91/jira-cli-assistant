@@ -5,62 +5,9 @@ import inquirer from "inquirer";
 import JiraService from "./services/jira.service";
 import dotenv from "dotenv";
 import path from "path";
-import os from "os";
-import fs from "fs";
-
+import { getProjectKey } from "./helper/getProjectKey.helper";
+import { setupConfig } from "./config/index.config";
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
-
-const configFilePath = path.join(os.homedir(), ".jira-cli-config.json");
-
-export async function setupConfig() {
-    console.log("🔧 Running setupConfig...");
-    const answers = await inquirer.prompt([
-        { type: "input", name: "jiraUrl", message: "Enter your JIRA URL (e.g., https://yourcompany.atlassian.net):" },
-        { type: "input", name: "jiraEmail", message: "Enter your JIRA email:" },
-        { type: "password", name: "jiraToken", message: "Enter your JIRA API token:" }
-    ]);
-
-    fs.writeFileSync(configFilePath, JSON.stringify(answers, null, 2));
-    console.log(`✅ Configuration saved to ${configFilePath}`);
-}
-
-export function getConfig() {
-    if (!fs.existsSync(configFilePath)) {
-        console.error("🚫 No configuration found. Please run `jira-cli config` to set up your environment.");
-        process.exit(1);
-    }
-    return JSON.parse(fs.readFileSync(configFilePath, "utf-8"));
-}
-
-export async function getProjectKey(projectKey?: string): Promise<string> {
-    const jiraService = new JiraService();
-
-    if (projectKey) {
-        return projectKey;
-    }
-
-    console.log("❓ No projectKey provided. Fetching all projects...");
-
-    const projects = await jiraService.fetchProjects();
-    if (!projects.length) {
-        console.error("🚫 No projects found.");
-        process.exit(1);
-    }
-
-    const { selectedProject } = await inquirer.prompt([
-        {
-            type: "list",
-            name: "selectedProject",
-            message: "Select a project:",
-            choices: projects.map((project: any) => ({
-                name: `${project.key} - ${project.name}`,
-                value: project.key,
-            })),
-        },
-    ]);
-
-    return selectedProject;
-}
 
 program
     .name("jira-cli-assistant")
