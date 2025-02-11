@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import path from "path";
 import { getProjectKey } from "./helper/getProjectKey.helper";
 import { setupConfig } from "./config/index.config";
+import chalk from "chalk";
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 program
@@ -32,16 +33,19 @@ program
             const jiraService = new JiraService();
             const projects = await jiraService.fetchAllProjects();
             if (projects.length === 0) {
-                console.log("🚫 No projects found.");
+                console.log(chalk.red("🚫 No projects found."));
                 return;
             }
 
-            console.log("📋 Project list:");
+            // Sort projects by project.key
+            projects.sort((a: any, b: any) => a.key.localeCompare(b.key));
+
+            console.log(chalk.blue("📋 Project list:"));
             projects.forEach((project: any) => {
-                console.log(`- ${project.key}: ${project.name}`);
+                console.log(chalk.green(`- ${project.key}: ${project.name}`));
             });
         } catch (error) {
-            console.error("🚫 Could not fetch projects:", error);
+            console.error(chalk.red("🚫 Could not fetch projects:", (error as Error).message));
         }
     });
 
