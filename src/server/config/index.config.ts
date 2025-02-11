@@ -1,6 +1,7 @@
 import os from "os";
 import fs from "fs";
 import path from "path";
+import chalk from "chalk";
 import inquirer from "inquirer";
 
 const configFilePath = path.join(os.homedir(), ".jira-cli-config.json");
@@ -23,4 +24,12 @@ export function getConfig() {
         process.exit(1);
     }
     return JSON.parse(fs.readFileSync(configFilePath, "utf-8"));
+}
+
+export function formatTable(headers: string[], rows: string[], columnWidths: number[]) {
+    const headerLine = headers.map((header, i) =>
+        chalk.blue(header.padEnd(columnWidths[i]))
+    ).join('');
+
+    return `\n${headerLine}\n${rows.join('\n')}`;
 }

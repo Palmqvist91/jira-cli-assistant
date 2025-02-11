@@ -10,9 +10,10 @@
   ## Useful commands
 
   ```bash
+  npm uninstall -g jira-cli-assistant
+  rm -rf dist
   npm run build
   npm install -g .
-  npm uninstall -g jira-cli-assistant
   which jira-cli
   jira-cli
   jira-cli config

@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 
-import { program } from "commander";
-import inquirer from "inquirer";
-import JiraService from "./services/jira.service";
-import dotenv from "dotenv";
 import path from "path";
-import { getProjectKey } from "./helper/getProjectKey.helper";
+import dotenv from "dotenv";
+import inquirer from "inquirer";
+import { program } from "commander";
+import JiraService from "./services/jira.service";
 import { setupConfig } from "./config/index.config";
-import chalk from "chalk";
+import { allProjectsCommand } from "./commands/allProjects.command";
+import { listProjectIssuesCommand } from "./commands/listProjectIssues.command";
+import { createIssueCommand } from "./commands/createIssue.command";
+
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 program
     .name("jira-cli-assistant")
     .version("1.0.0")
-    .description("A CLI tool for Jira");
+    .description("A CLI tool for Jira created by DevbyT");
 
 // Move config command to be first
 program
@@ -29,24 +31,7 @@ program
     .command("projects")
     .description("Lists all JIRA projects")
     .action(async () => {
-        try {
-            const jiraService = new JiraService();
-            const projects = await jiraService.fetchAllProjects();
-            if (projects.length === 0) {
-                console.log(chalk.red("🚫 No projects found."));
-                return;
-            }
-
-            // Sort projects by project.key
-            projects.sort((a: any, b: any) => a.key.localeCompare(b.key));
-
-            console.log(chalk.blue("📋 Project list:"));
-            projects.forEach((project: any) => {
-                console.log(chalk.green(`- ${project.key}: ${project.name}`));
-            });
-        } catch (error) {
-            console.error(chalk.red("🚫 Could not fetch projects:", (error as Error).message));
-        }
+        await allProjectsCommand();
     });
 
 // List issues
@@ -54,21 +39,10 @@ program
     .command("list [projectKey]")
     .description("Lists open issues for a specific JIRA project")
     .action(async (projectKey?: string) => {
-        try {
-            const jiraService = new JiraService();
-            const key = await getProjectKey(projectKey);
-            console.log(`📂 Fetching issues for project: ${key}`);
-            const issues = await jiraService.fetchIssues(key);
-            if (issues.length === 0) {
-                console.log("✅ No open issues found.");
-                return;
-            }
-
-            issues.forEach((issue: any) => {
-                console.log(`- [${issue.key}] ${issue.fields.summary} - (${issue.fields.status.name})`);
-            });
-        } catch (error) {
-            console.error("🚫 Could not fetch issues:", error);
+        if (projectKey) {
+            await listProjectIssuesCommand(projectKey);
+        } else {
+            console.log("🚫 Please provide a project key.");
         }
     });
 
@@ -77,19 +51,7 @@ program
     .command("create <projectKey>")
     .description("Creates a new issue in a specific project")
     .action(async (projectKey: string) => {
-        try {
-            const { summary, description, issueType } = await inquirer.prompt([
-                { type: "input", name: "summary", message: "Enter a summary:" },
-                { type: "input", name: "description", message: "Enter a description (optional):", default: "" },
-                { type: "list", name: "issueType", message: "Select issue type:", choices: ["Bug", "Task", "Story"] }
-            ]);
-
-            const jiraService = new JiraService();
-            const issue = await jiraService.createIssue(projectKey, summary, description, issueType);
-            console.log(`✅ Issue ${issue.key} has been created.`);
-        } catch (error) {
-            console.error("🚫 Could not create issue:", error);
-        }
+        await createIssueCommand(projectKey);
     });
 
 // Update an issue

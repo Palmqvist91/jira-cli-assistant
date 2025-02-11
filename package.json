@@ -8,11 +8,13 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "build:reset": "npm uninstall -g jira-cli-assistant && rm -rf dist && npm run build && npm install -g ."
   },
   "dependencies": {
     "axios": "^1.7.9",
     "chalk": "^4.1.2",
+    "cli-table3": "^0.6.5",
     "commander": "^13.1.0",
     "dotenv": "^16.4.7",
     "inquirer": "^12.4.1"
