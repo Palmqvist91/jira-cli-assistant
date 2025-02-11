@@ -78,7 +78,7 @@ export class JiraService {
             const payload = {
                 fields: {
                     summary,
-                    assignee: { name: assignee }
+                    assignee: { id: assignee }
                 },
             };
 
