@@ -10,7 +10,7 @@ export async function getProjectKey(projectKey?: string): Promise<string> {
 
     console.log("❓ No projectKey provided. Fetching all projects...");
 
-    const projects = await jiraService.fetchProjects();
+    const projects = await jiraService.fetchAllProjects();
     if (!projects.length) {
         console.error("🚫 No projects found.");
         process.exit(1);

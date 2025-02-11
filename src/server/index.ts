@@ -30,7 +30,7 @@ program
     .action(async () => {
         try {
             const jiraService = new JiraService();
-            const projects = await jiraService.fetchProjects();
+            const projects = await jiraService.fetchAllProjects();
             if (projects.length === 0) {
                 console.log("🚫 No projects found.");
                 return;

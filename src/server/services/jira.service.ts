@@ -26,7 +26,7 @@ export class JiraService {
         }
     }
 
-    async fetchProjects() {
+    async fetchAllProjects() {
         try {
             const response = await this.client.get('/rest/api/3/project');
             return response.data;
