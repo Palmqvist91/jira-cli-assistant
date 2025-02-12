@@ -7,15 +7,20 @@ import inquirer from "inquirer";
 const configFilePath = path.join(os.homedir(), ".jira-cli-config.json");
 
 export async function setupConfig() {
-    console.log("🔧 Running setupConfig...");
-    const answers = await inquirer.prompt([
-        { type: "input", name: "jiraUrl", message: "Enter your JIRA URL (e.g., https://yourcompany.atlassian.net):" },
-        { type: "input", name: "jiraEmail", message: "Enter your JIRA email:" },
-        { type: "password", name: "jiraToken", message: "Enter your JIRA API token:" }
-    ]);
+    try {
+        console.log("🔧 Running setupConfig...");
+        const answers = await inquirer.prompt([
+            { type: "input", name: "jiraUrl", message: "Enter your JIRA URL (e.g., https://yourcompany.atlassian.net):" },
+            { type: "input", name: "jiraEmail", message: "Enter your JIRA email:" },
+            { type: "password", name: "jiraToken", message: "Enter your JIRA API token:" }
+        ]);
 
-    fs.writeFileSync(configFilePath, JSON.stringify(answers, null, 2));
-    console.log(`✅ Configuration saved to ${configFilePath}`);
+        fs.writeFileSync(configFilePath, JSON.stringify(answers, null, 2));
+        console.log(`✅ Configuration saved to ${configFilePath}`);
+    }
+    catch (error) {
+        console.error("🚫 An error occurred while setting up your configuration.");
+    }
 }
 
 export function getConfig() {
