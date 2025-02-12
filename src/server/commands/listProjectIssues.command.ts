@@ -2,15 +2,23 @@ import chalk from "chalk";
 import { JiraService } from "../services/jira.service";
 import { getProjectKey } from "../helper/getProjectKey.helper";
 
-export async function listProjectIssuesCommand(projectKey: string) {
+export async function listProjectIssuesCommand(projectKey: string, options: any) {
     try {
         const jiraService = new JiraService();
         const key = await getProjectKey(projectKey);
-        console.log(`📂 Fetching issues for project: ${key}`);
-        const issues = await jiraService.fetchProjectIssues(key);
+        console.log(`📂 Fetching issues for project: ${key} ${options.status ? 'with status: ' + options.status : ''} ${options.assignee ? 'for assignee: ' + options.assignee : ''}`);
+        let issues = await jiraService.fetchProjectIssues(key);
         if (issues.length === 0) {
             console.log("✅ No open issues found.");
             return;
+        }
+
+        if (options.status) {
+            issues = issues.filter((issue: any) => issue.fields.status.name === options.status);
+        }
+
+        if (options.assignee) {
+            issues = issues.filter((issue: any) => issue.fields.assignee?.displayName === options.assignee);
         }
 
         issues.sort((a: any, b: any) => {

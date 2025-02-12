@@ -38,7 +38,7 @@ describe('listProjectIssuesCommand', () => {
             .mockResolvedValue(mockIssues);
 
         // Act
-        await listProjectIssuesCommand('TEST');
+        await listProjectIssuesCommand('TEST', {});
 
         // Assert
         expect(mockConsoleLog).toHaveBeenCalled();
@@ -52,7 +52,7 @@ describe('listProjectIssuesCommand', () => {
             .mockResolvedValue([]);
 
         // Act
-        await listProjectIssuesCommand('TEST');
+        await listProjectIssuesCommand('TEST', {});
 
         // Assert
         expect(mockConsoleLog).toHaveBeenCalledWith('✅ No open issues found.');
@@ -66,7 +66,7 @@ describe('listProjectIssuesCommand', () => {
             .mockRejectedValue(error);
 
         // Act
-        await listProjectIssuesCommand('TEST');
+        await listProjectIssuesCommand('TEST', {});
 
         // Assert
         expect(mockConsoleError).toHaveBeenCalledWith(

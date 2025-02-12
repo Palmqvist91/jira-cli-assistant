@@ -58,8 +58,10 @@ program
 program
     .command("list [projectKey]")
     .description("Lists open issues for a specific JIRA project")
-    .action(async (projectKey: string) => {
-        await listProjectIssuesCommand(projectKey);
+    .option("-s, --status <status>", "List issues by status")
+    .option("-a, --assignee <assignee>", "List issues by assignee")
+    .action(async (projectKey: string, options: any) => {
+        await listProjectIssuesCommand(projectKey, options);
     });
 
 // Create a new issue
