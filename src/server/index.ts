@@ -66,8 +66,10 @@ program
 program
     .command("create <projectKey>")
     .description("Creates a new issue in a specific project")
-    .action(async (projectKey: string) => {
-        await createIssueCommand(projectKey);
+    .option("-m, --summary <summary>", "Set the summary of the issue")
+    .option("-t, --issueType <issueType>", "Set the issue type of the issue")
+    .action(async (projectKey: string, options: any) => {
+        await createIssueCommand(projectKey, options);
     });
 
 // Update an issue with flags

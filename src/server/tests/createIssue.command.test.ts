@@ -36,7 +36,7 @@ describe('createIssueCommand', () => {
             .mockResolvedValue(mockCreatedIssue);
 
         // Act
-        await createIssueCommand('TEST');
+        await createIssueCommand('TEST', { summary: 'Test Issue', issueType: 'Task' });
 
         // Assert
         expect(JiraService.prototype.createIssue).toHaveBeenCalledWith(
@@ -62,7 +62,7 @@ describe('createIssueCommand', () => {
             .mockRejectedValue(mockError);
 
         // Act
-        await createIssueCommand('TEST');
+        await createIssueCommand('TEST', { summary: 'Test Issue', issueType: 'Task' });
 
         // Assert
         expect(mockConsoleError).toHaveBeenCalledWith(
