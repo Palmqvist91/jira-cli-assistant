@@ -24,6 +24,10 @@ export async function updateIssueCommand(issueKey: string, options: any) {
 
         // If no flags are provided, prompt the user
         if (!options.summary && !options.status && !options.assignee) {
+            const summaryPrompt = await inquirer.prompt([
+                { type: "input", name: "summary", message: "Enter a new summary (or keep existing):", default: currentSummary }
+            ]);
+
             const statusPrompt = await inquirer.prompt([
                 { type: "list", name: "status", message: "Select a new status (or keep existing):", choices: statuses, default: status }
             ]);
@@ -31,7 +35,7 @@ export async function updateIssueCommand(issueKey: string, options: any) {
                 { type: "list", name: "assignee", message: "Select an assignee (or keep existing):", choices: userChoices, default: currentAssignee }
             ]);
 
-            await jiraService.updateIssue(issueKey, summary, statusPrompt.status, assigneePrompt.assignee);
+            await jiraService.updateIssue(issueKey, summaryPrompt.summary, statusPrompt.status, assigneePrompt.assignee);
         } else {
             // If assignee is provided as a name, find the corresponding accountId
             const assigneeId = options.assignee ? users.find((user: any) => user.name === options.assignee)?.value : assignee;
