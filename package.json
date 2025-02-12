@@ -1,6 +1,6 @@
 {
   "name": "jira-cli-assistant",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI tool to interact with JIRA API using TypeScript",
   "main": "dist/server/index.js",
   "bin": {
@@ -12,7 +12,7 @@
     "build:reset": "npm run test && npm uninstall -g jira-cli-assistant && rm -rf dist && npm run build && npm install -g .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "postinstall": "node ./dist/server/index.js"
+    "postinstall": "node -e 'require(\"./dist/server/text.command\").welcomText()'"
   },
   "dependencies": {
     "axios": "^1.7.9",
