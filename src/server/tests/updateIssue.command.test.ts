@@ -33,7 +33,7 @@ describe('updateIssueCommand', () => {
         const mockUserInput: UpdateUserInput = {
             summary: 'New Summary',
             status: 'In Progress',
-            assignee: 'new-assignee-id'
+            assignee: 'New Assignee'
         };
 
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.fetchSingleIssue
@@ -47,7 +47,7 @@ describe('updateIssueCommand', () => {
         (inquirer.prompt as unknown as Mock<() => Promise<UpdateUserInput>>).mockResolvedValue(mockUserInput);
 
         // Act
-        await updateIssueCommand('TEST-1', { summary: 'New Summary', status: 'In Progress', assignee: 'new-assignee-id' });
+        await updateIssueCommand('TEST-1', { summary: 'New Summary', status: 'In Progress', assignee: 'New Assignee' });
 
         // Assert
         expect(JiraService.prototype.updateIssue).toHaveBeenCalledWith(
