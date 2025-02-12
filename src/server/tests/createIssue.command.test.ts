@@ -1,8 +1,8 @@
-import { createIssueCommand } from '../commands/createIssue.command';
-import { JiraService } from '../services/jira.service';
 import inquirer from 'inquirer';
 import { jest } from '@jest/globals';
 import type { Mock } from 'jest-mock';
+import { JiraService } from '../services/jira.service';
+import { createIssueCommand } from '../commands/createIssue.command';
 
 interface UserInput {
     summary: string;

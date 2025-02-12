@@ -1,7 +1,7 @@
-import { jest } from '@jest/globals';
-import { allProjectsCommand } from '../commands/allProjects.command';
-import { JiraService } from '../services/jira.service';
 import chalk from 'chalk';
+import { jest } from '@jest/globals';
+import { JiraService } from '../services/jira.service';
+import { allProjectsCommand } from '../commands/allProjects.command';
 
 // Mock the entire JiraService
 jest.mock('../services/jira.service');

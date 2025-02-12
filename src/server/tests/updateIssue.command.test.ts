@@ -1,8 +1,8 @@
+import inquirer from 'inquirer';
 import { jest } from '@jest/globals';
 import type { Mock } from 'jest-mock';
-import { updateIssueCommand } from '../commands/updateIssue.command';
 import { JiraService } from '../services/jira.service';
-import inquirer from 'inquirer';
+import { updateIssueCommand } from '../commands/updateIssue.command';
 
 jest.mock('../services/jira.service');
 jest.mock('inquirer');

@@ -1,8 +1,8 @@
 import { jest } from '@jest/globals';
 import type { Mock } from 'jest-mock';
-import { listProjectIssuesCommand } from '../commands/listProjectIssues.command';
 import { JiraService } from '../services/jira.service';
 import { getProjectKey } from '../helper/getProjectKey.helper';
+import { listProjectIssuesCommand } from '../commands/listProjectIssues.command';
 
 // Mock the entire JiraService
 jest.mock('../services/jira.service');

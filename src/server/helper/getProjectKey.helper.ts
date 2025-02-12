@@ -1,5 +1,5 @@
-import JiraService from "../services/jira.service";
 import inquirer from "inquirer";
+import { JiraService } from "../services/jira.service";
 
 export async function getProjectKey(projectKey?: string): Promise<string> {
     const jiraService = new JiraService();
