@@ -40,9 +40,9 @@ To install and run the Jira CLI Assistant, follow these steps:
 To run Jira CLI Assistant, you need to configure the following environment variables using the `jira config` command.
 
 The required inputs is:
-Enter your JIRA URL (e.g., https://yourcompany.atlassian.net):"
-Enter your JIRA email:
-Enter your JIRA API token:
+Enter your JIRA URL (e.g., https://yourcompany.atlassian.net)
+Enter your JIRA email
+Enter your JIRA API token
 
 ### Getting a JIRA API Token
 
