@@ -6,7 +6,6 @@ import type { Mock } from 'jest-mock';
 
 interface UserInput {
     summary: string;
-    description: string;
     issueType: string;
 }
 
@@ -25,7 +24,6 @@ describe('createIssueCommand', () => {
         // Arrange
         const mockUserInput: UserInput = {
             summary: 'Test Issue',
-            description: 'Test Description',
             issueType: 'Task'
         };
 
@@ -44,7 +42,6 @@ describe('createIssueCommand', () => {
         expect(JiraService.prototype.createIssue).toHaveBeenCalledWith(
             'TEST',
             mockUserInput.summary,
-            mockUserInput.description,
             mockUserInput.issueType
         );
         expect(mockConsoleLog).toHaveBeenCalledWith(
@@ -57,7 +54,6 @@ describe('createIssueCommand', () => {
         const mockError = new Error('Failed to create issue');
         const mockUserInput: UserInput = {
             summary: 'Test Issue',
-            description: 'Test Description',
             issueType: 'Task'
         };
 

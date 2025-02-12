@@ -56,19 +56,23 @@ export class JiraService {
         }
     }
 
-    async createIssue(projectKey: string, summary: string, description: string, issueType: string) {
+    async createIssue(projectKey: string, summary: string, issueType: string) {
         try {
             const response = await this.client.post('/rest/api/3/issue', {
                 fields: {
                     project: { key: projectKey },
                     summary,
-                    description,
                     issuetype: { name: issueType },
                 },
             });
 
             return response.data;
         } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                console.error("🚫 Could not create issue:", error.response.data);
+            } else {
+                console.error("🚫 Could not create issue:", error);
+            }
             throw new Error(`Could not create issue: ${(error as Error).message}`);
         }
     }
