@@ -12,28 +12,11 @@ Jira CLI Assistant is a command-line tool for interacting with the Jira API. It 
 
 ## Installation
 
-To install and run the Jira CLI Assistant, follow these steps:
+To install Jira CLI Assistant globally, run:
 
-1. Clone this repository:
-   ```bash
-   git clone <repository-url>
-   cd jira-cli-assistant
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Build the project:
-   ```bash
-   npm run build
-   ```
-
-4. Install the CLI tool globally:
-   ```bash
-   npm install -g .
-   ```
+```bash
+npm install -g jira-cli-assistant
+```
 
 ## Environment Variables
 
@@ -57,6 +40,7 @@ Enter your JIRA API token
 ## Usage
 
 After installation, you can use the following commands:
+(for more info and useful flags use `jira help`)
 
 - **Configure Jira**:
   ```bash
@@ -87,22 +71,6 @@ After installation, you can use the following commands:
   ```bash
   jira delete <issueKey>
   ```
-
-## Project Structure
-
-- **src/**: The source code of the app
-- **src/server/**: Backend logic
-- **src/client/**: Frontend views (if applicable)
-
-## Contribute
-
-If you want to contribute to the project, please follow these steps:
-
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/new-feature`)
-3. Make your changes and commit (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Submit a pull request
 
 ## License
 
