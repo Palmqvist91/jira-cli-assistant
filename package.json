@@ -12,7 +12,8 @@
     "build:reset": "npm run test && npm uninstall -g jira-cli-assistant && rm -rf dist && npm run build && npm install -g .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "postinstall": "node -e 'require(\"./dist/server/text.command\").welcomText()'"
+    "postinstall": "npm run postinstall:welcome",
+    "postinstall:welcome": "node -e 'require(\"./dist/server/commands/text.command\").welcomText()'"
   },
   "dependencies": {
     "axios": "^1.7.9",
