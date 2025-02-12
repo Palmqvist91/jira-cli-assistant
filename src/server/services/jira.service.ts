@@ -41,8 +41,7 @@ export class JiraService {
             const response = await this.client.get(`/rest/api/3/search?jql=project=${projectKey}`);
             return response.data.issues;
         } catch (error) {
-            console.error(`🚫 Could not fetch issues for project ${projectKey}:`, error);
-            return [];
+            console.error(`🚫 Could not fetch issues for project ${projectKey}:`);
         }
     }
 
