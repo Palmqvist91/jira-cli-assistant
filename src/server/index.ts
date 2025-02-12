@@ -28,8 +28,9 @@ program
 program
   .command("config")
   .description("Set up your JIRA configuration")
-  .action(async () => {
-    await setupConfig();
+  .option("--reset", "Reset the configuration")
+  .action(async (options: any) => {
+    await setupConfig(options);
   });
 
 // List projects

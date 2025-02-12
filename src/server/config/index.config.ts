@@ -6,8 +6,14 @@ import inquirer from "inquirer";
 
 const configFilePath = path.join(os.homedir(), ".jira-cli-config.json");
 
-export async function setupConfig() {
+export async function setupConfig(options: any) {
     try {
+        if (options.reset) {
+            fs.unlinkSync(configFilePath);
+            console.log("🔧 Configuration reset successfully.");
+            return;
+        }
+
         console.log("🔧 Running setupConfig...");
         const answers = await inquirer.prompt([
             { type: "input", name: "jiraUrl", message: "Enter your JIRA URL (e.g., https://yourcompany.atlassian.net):" },
