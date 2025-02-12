@@ -47,14 +47,14 @@ describe('updateIssueCommand', () => {
         (inquirer.prompt as unknown as Mock<() => Promise<UpdateUserInput>>).mockResolvedValue(mockUserInput);
 
         // Act
-        await updateIssueCommand('TEST-1');
+        await updateIssueCommand('TEST-1', { summary: 'New Summary', status: 'In Progress', assignee: 'new-assignee-id' });
 
         // Assert
         expect(JiraService.prototype.updateIssue).toHaveBeenCalledWith(
             'TEST-1',
-            mockUserInput.summary,
-            mockUserInput.status,
-            mockUserInput.assignee
+            'New Summary',
+            'In Progress',
+            'new-assignee-id'
         );
         expect(mockConsoleLog).toHaveBeenCalledWith('✅ Issue TEST-1 has been updated.');
     });
@@ -66,7 +66,7 @@ describe('updateIssueCommand', () => {
             .mockRejectedValue(mockError);
 
         // Act
-        await updateIssueCommand('TEST-1');
+        await updateIssueCommand('TEST-1', {});
 
         // Assert
         expect(mockConsoleError).toHaveBeenCalledWith(

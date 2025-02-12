@@ -21,7 +21,9 @@ program
 program
     .action(() => {
         console.log(`
-            Welcome to the Jira CLI Assistant! 🚀
+            Welcome to Jira CLI Assistant! 🚀
+            
+                        by PrHiGo
 
             Here are some example commands you can run:
             - jira project              List all projects
@@ -68,12 +70,15 @@ program
         await createIssueCommand(projectKey);
     });
 
-// Update an issue
+// Update an issue with flags
 program
     .command("update <issueKey>")
     .description("Updates a specific issue")
-    .action(async (issueKey: string) => {
-        await updateIssueCommand(issueKey);
+    .option("-s, --status <status>", "Set the status of the issue")
+    .option("-a, --assignee <assignee>", "Set the assignee of the issue")
+    .option("-m, --summary <summary>", "Set the summary of the issue")
+    .action(async (issueKey: string, options: any) => {
+        await updateIssueCommand(issueKey, options);
     });
 
 // Delete an issue
