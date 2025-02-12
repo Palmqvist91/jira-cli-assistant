@@ -1,4 +1,4 @@
-export async function helpCommand() {
+export async function helpText() {
     console.log(`
     Usage:
     $ jira <command> [options]
@@ -29,4 +29,21 @@ export async function helpCommand() {
     For more information on a specific command, run:
     $ jira <command> --help
     `);
+}
+
+export async function welcomText() {
+    console.log(`
+        Welcome to Jira CLI Assistant! 🚀
+  
+                  by PrHiGo
+
+  Here are some example commands you can run:
+  - jira project               List all projects
+  - jira list <projectKey>     List open issues for a project
+  - jira create <projectKey>   Create a new issue
+  - jira update <issueKey>     Update an existing issue
+  - jira delete <issueKey>     Delete an issue
+
+      For more information, run: jira help
+`);
 }

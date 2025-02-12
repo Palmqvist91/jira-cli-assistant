@@ -4,7 +4,7 @@ import path from "path";
 import dotenv from "dotenv";
 import { program } from "commander";
 import { setupConfig } from "./config/index.config";
-import { helpCommand } from "./commands/help.command";
+import { welcomText, helpText } from "./commands/text.command";
 import { allProjectsCommand } from "./commands/allProjects.command";
 import { createIssueCommand } from "./commands/createIssue.command";
 import { updateIssueCommand } from "./commands/updateIssue.command";
@@ -20,21 +20,9 @@ program
 
 // Welcome message if no command is provided
 program
-  .action(() => {
-    console.log(`
-                  Welcome to Jira CLI Assistant! 🚀
-            
-                            by PrHiGo
-
-            Here are some example commands you can run:
-            - jira project               List all projects
-            - jira list <projectKey>     List open issues for a project
-            - jira create <projectKey>   Create a new issue
-            - jira update <issueKey>     Update an existing issue
-            - jira delete <issueKey>     Delete an issue
-
-                For more information, run: jira help
-        `);
+  .description("Welcome to Jira CLI Assistant! 🚀")
+  .action(async () => {
+    await welcomText();
   });
 
 // Set up your JIRA configuration
@@ -98,7 +86,7 @@ program
   .command("help")
   .description("Display additional help text")
   .action(async () => {
-    await helpCommand();
+    await helpText();
   });
 
 program.parse(process.argv);
