@@ -26,7 +26,7 @@ describe('deleteIssueCommand', () => {
             .mockResolvedValue({});
 
         // Act
-        await deleteIssueCommand('TEST-1');
+        await deleteIssueCommand('TEST-1', {});
 
         // Assert
         expect(JiraService.prototype.deleteIssue).toHaveBeenCalledWith('TEST-1');
@@ -38,7 +38,7 @@ describe('deleteIssueCommand', () => {
         (inquirer.prompt as unknown as Mock<() => Promise<DeleteConfirmation>>).mockResolvedValue({ confirm: false });
 
         // Act
-        await deleteIssueCommand('TEST-1');
+        await deleteIssueCommand('TEST-1', {});
 
         // Assert
         expect(JiraService.prototype.deleteIssue).not.toHaveBeenCalled();
@@ -53,7 +53,7 @@ describe('deleteIssueCommand', () => {
             .mockRejectedValue(mockError);
 
         // Act
-        await deleteIssueCommand('TEST-1');
+        await deleteIssueCommand('TEST-1', {});
 
         // Assert
         expect(mockConsoleError).toHaveBeenCalledWith(

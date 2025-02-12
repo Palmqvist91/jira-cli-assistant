@@ -89,8 +89,9 @@ program
 program
     .command("delete <issueKey>")
     .description("Deletes a specific issue")
-    .action(async (issueKey: string) => {
-        await deleteIssueCommand(issueKey);
+    .option("--force", "Force delete the issue without confirmation")
+    .action(async (issueKey: string, options: any) => {
+        await deleteIssueCommand(issueKey, options);
     });
 
 program.parse(process.argv);

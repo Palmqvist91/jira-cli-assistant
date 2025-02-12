@@ -1,20 +1,22 @@
 import inquirer from "inquirer";
 import { JiraService } from "../services/jira.service";
 
-export async function deleteIssueCommand(issueKey: string) {
+export async function deleteIssueCommand(issueKey: string, options: any) {
     try {
-        const { confirm } = await inquirer.prompt([
-            {
-                type: "confirm",
-                name: "confirm",
-                message: `Are you sure you want to delete issue ${issueKey}?`,
-                default: false,
-            },
-        ]);
+        if (!options.force) {
+            const { confirm } = await inquirer.prompt([
+                {
+                    type: "confirm",
+                    name: "confirm",
+                    message: `Are you sure you want to delete issue ${issueKey}?`,
+                    default: false,
+                },
+            ]);
 
-        if (!confirm) {
-            console.log("❌ Deletion cancelled.");
-            return;
+            if (!confirm) {
+                console.log("❌ Deletion cancelled.");
+                return;
+            }
         }
 
         const jiraService = new JiraService();
