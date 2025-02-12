@@ -1,0 +1,8 @@
+# Ignore TypeScript source code, tests, and local configuration files
+src/
+.env*
+jest.config.js
+jest.setup.ts
+tailwind.config.ts
+tsconfig.json
+node_modules/
