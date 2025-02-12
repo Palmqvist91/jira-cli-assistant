@@ -1,5 +1,17 @@
 export async function helpText() {
     console.log(`
+        Welcome to Jira CLI Assistant! 🚀
+  
+                  by PrHiGo
+
+  Here are some example commands you can run:
+  - jira project               List all projects
+  - jira list <projectKey>     List open issues for a project
+  - jira create <projectKey>   Create a new issue
+  - jira update <issueKey>     Update an existing issue
+  - jira delete <issueKey>     Delete an issue
+
+
     Usage:
     $ jira <command> [options]
 
