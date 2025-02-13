@@ -50,8 +50,7 @@ export class JiraService {
             const response = await this.client.get(`/rest/api/3/issue/${issueKey}`);
             return response.data;
         } catch (error) {
-            console.error(`🚫 Could not fetch issue ${issueKey}:`, error);
-            return null;
+            console.error(`🚫 Could not fetch issue ${issueKey}:`);
         }
     }
 

@@ -1,10 +1,10 @@
 import inquirer from "inquirer";
 import { JiraService } from "../services/jira.service";
-import { getProjectKey } from "../helper/getProjectKey.helper";
+import { getProjectKeyHelper } from "../helper/getProjectKey.helper";
 
 export async function createIssueCommand(projectKey: string, userInput: { summary: string, issueType: string }) {
     try {
-        const key = await getProjectKey(projectKey);
+        const key = await getProjectKeyHelper(projectKey);
 
         const summary = userInput.summary || await inquirer.prompt([
             { type: "input", name: "summary", message: "Enter a summary:" }

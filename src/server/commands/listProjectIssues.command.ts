@@ -1,11 +1,11 @@
 import chalk from "chalk";
 import { JiraService } from "../services/jira.service";
-import { getProjectKey } from "../helper/getProjectKey.helper";
+import { getProjectKeyHelper } from "../helper/getProjectKey.helper";
 
 export async function listProjectIssuesCommand(projectKey: string, options: any) {
     try {
         const jiraService = new JiraService();
-        const key = await getProjectKey(projectKey);
+        const key = await getProjectKeyHelper(projectKey);
         console.log(`📂 Fetching issues for project: ${key} ${options.status ? 'with status: ' + options.status : ''} ${options.assignee ? 'for assignee: ' + options.assignee : ''}`);
         let issues = await jiraService.fetchProjectIssues(key);
         if (!issues || issues.length === 0) {

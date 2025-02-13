@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 import type { Mock } from 'jest-mock';
 import { JiraService } from '../services/jira.service';
 import { createIssueCommand } from '../commands/createIssue.command';
-import { getProjectKey } from '../helper/getProjectKey.helper';
+import { getProjectKeyHelper } from '../helper/getProjectKey.helper';
 
 interface UserInput {
     summary: string;
@@ -33,7 +33,7 @@ describe('createIssueCommand', () => {
             key: 'TEST-1'
         };
 
-        (getProjectKey as jest.Mock).mockResolvedValue('TEST' as never);
+        (getProjectKeyHelper as jest.Mock).mockResolvedValue('TEST' as never);
         (inquirer.prompt as unknown as Mock<() => Promise<UserInput>>).mockResolvedValue(mockUserInput);
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.createIssue
             .mockResolvedValue(mockCreatedIssue);
@@ -42,7 +42,7 @@ describe('createIssueCommand', () => {
         await createIssueCommand('TEST', { summary: 'Test Issue', issueType: 'Task' });
 
         // Assert
-        expect(getProjectKey).toHaveBeenCalledWith('TEST');
+        expect(getProjectKeyHelper).toHaveBeenCalledWith('TEST');
         expect(JiraService.prototype.createIssue).toHaveBeenCalledWith(
             'TEST',
             mockUserInput.summary,
@@ -65,7 +65,7 @@ describe('createIssueCommand', () => {
         };
 
         // Mock getProjectKey to simulate user selecting a valid project
-        (getProjectKey as jest.Mock).mockResolvedValue('VALID' as never);
+        (getProjectKeyHelper as jest.Mock).mockResolvedValue('VALID' as never);
         (inquirer.prompt as unknown as Mock<() => Promise<UserInput>>).mockResolvedValue(mockUserInput);
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.createIssue
             .mockResolvedValue(mockCreatedIssue);
@@ -74,7 +74,7 @@ describe('createIssueCommand', () => {
         await createIssueCommand('INVALID', { summary: 'Test Issue', issueType: 'Task' });
 
         // Assert
-        expect(getProjectKey).toHaveBeenCalledWith('INVALID');
+        expect(getProjectKeyHelper).toHaveBeenCalledWith('INVALID');
         expect(JiraService.prototype.createIssue).toHaveBeenCalledWith(
             'VALID', // Should use the project key returned from getProjectKey
             mockUserInput.summary,
@@ -93,7 +93,7 @@ describe('createIssueCommand', () => {
             issueType: 'Task'
         };
 
-        (getProjectKey as jest.Mock).mockResolvedValue('TEST' as never);
+        (getProjectKeyHelper as jest.Mock).mockResolvedValue('TEST' as never);
         (inquirer.prompt as unknown as Mock<() => Promise<UserInput>>).mockResolvedValue(mockUserInput);
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.createIssue
             .mockRejectedValue(mockError);
@@ -111,13 +111,13 @@ describe('createIssueCommand', () => {
     it('should handle errors from getProjectKey', async () => {
         // Arrange
         const mockError = new Error('Invalid project key');
-        (getProjectKey as jest.Mock).mockRejectedValue(mockError as never);
+        (getProjectKeyHelper as jest.Mock).mockRejectedValue(mockError as never);
 
         // Act
         await createIssueCommand('INVALID', { summary: 'Test Issue', issueType: 'Task' });
 
         // Assert
-        expect(getProjectKey).toHaveBeenCalledWith('INVALID');
+        expect(getProjectKeyHelper).toHaveBeenCalledWith('INVALID');
         expect(mockConsoleError).toHaveBeenCalledWith(
             '🚫 Could not create issue:',
             mockError

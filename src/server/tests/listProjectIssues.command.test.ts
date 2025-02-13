@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import type { Mock } from 'jest-mock';
 import { JiraService } from '../services/jira.service';
-import { getProjectKey } from '../helper/getProjectKey.helper';
+import { getProjectKeyHelper } from '../helper/getProjectKey.helper';
 import { listProjectIssuesCommand } from '../commands/listProjectIssues.command';
 
 // Mock the entire JiraService
@@ -33,7 +33,7 @@ describe('listProjectIssuesCommand', () => {
             }
         ];
 
-        (getProjectKey as Mock<GetProjectKeyType>).mockResolvedValue('TEST');
+        (getProjectKeyHelper as Mock<GetProjectKeyType>).mockResolvedValue('TEST');
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.fetchProjectIssues
             .mockResolvedValue(mockIssues);
 
@@ -47,7 +47,7 @@ describe('listProjectIssuesCommand', () => {
 
     it('should handle empty issues list', async () => {
         // Arrange
-        (getProjectKey as Mock<GetProjectKeyType>).mockResolvedValue('TEST');
+        (getProjectKeyHelper as Mock<GetProjectKeyType>).mockResolvedValue('TEST');
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.fetchProjectIssues
             .mockResolvedValue([]);
 
@@ -61,7 +61,7 @@ describe('listProjectIssuesCommand', () => {
     it('should handle errors', async () => {
         // Arrange
         const error = new Error('API Error');
-        (getProjectKey as Mock<GetProjectKeyType>).mockResolvedValue('TEST');
+        (getProjectKeyHelper as Mock<GetProjectKeyType>).mockResolvedValue('TEST');
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.fetchProjectIssues
             .mockRejectedValue(error);
 
