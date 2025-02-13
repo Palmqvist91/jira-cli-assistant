@@ -36,9 +36,15 @@ export class JiraService {
         }
     }
 
-    async fetchProjectIssues(projectKey: string) {
+    async fetchProjectIssues(projectKey: string, options: { sprintId?: string } = {}) {
         try {
-            const response = await this.client.get(`/rest/api/3/search?jql=project=${projectKey}`);
+            let jql = `project=${projectKey}`;
+
+            if (options.sprintId) {
+                jql += ` AND sprint = ${options.sprintId}`;
+            }
+
+            const response = await this.client.get(`/rest/api/3/search?jql=${encodeURIComponent(jql)}`);
             return response.data.issues;
         } catch (error) {
             console.error(`🚫 Could not fetch issues for project ${projectKey}:`);
@@ -156,6 +162,28 @@ export class JiraService {
         } catch (error) {
             console.error("🚫 Could not fetch assignable users:", error);
             return [];
+        }
+    }
+
+    async fetchProjectSprints(projectKey: string) {
+        try {
+            // Först hämtar vi board ID för projektet
+            const boardsResponse = await this.client.get(`/rest/agile/1.0/board?projectKeyOrId=${projectKey}`);
+            const boards = boardsResponse.data.values;
+
+            if (!boards || boards.length === 0) {
+                throw new Error(`No boards found for project ${projectKey}`);
+            }
+
+            // Använder första Scrum board vi hittar
+            const scrumBoard = boards.find((board: any) => board.type === 'scrum') || boards[0];
+
+            // Hämta sprints för denna board
+            const sprintsResponse = await this.client.get(`/rest/agile/1.0/board/${scrumBoard.id}/sprint?state=active,future`);
+            return sprintsResponse.data.values;
+        } catch (error) {
+            console.error(`🚫 Could not fetch sprints for project ${projectKey}:`, error);
+            throw error;
         }
     }
 }

@@ -9,6 +9,7 @@ import { createIssueCommand } from "./commands/createIssue.command";
 import { updateIssueCommand } from "./commands/updateIssue.command";
 import { deleteIssueCommand } from "./commands/deleteIssue.command";
 import { listProjectIssuesCommand } from "./commands/listProjectIssues.command";
+import { listProjectSprintsCommand } from "./commands/listProjectSprints.command";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -46,6 +47,15 @@ projectsCommand
     await allProjectsCommand();
   });
 
+projectsCommand
+  .command("sprints")
+  .alias("sprint")
+  .argument("[projectKey]", "Project key to list sprints from")
+  .description("List all sprints for a project")
+  .action(async (projectKey: string) => {
+    await listProjectSprintsCommand(projectKey);
+  });
+
 // Issues commands
 const issuesCommand = program
   .command("issues")
@@ -57,6 +67,7 @@ issuesCommand
   .argument("[projectKey]", "Project key to list issues from")
   .option("-s, --status <status>", "Filter issues by status")
   .option("-a, --assignee <assignee>", "Filter issues by assignee")
+  .option("--sprint [sprint]", "Filter issues by sprint (name or ID). If no value is provided, you will be prompted to select a sprint")
   .action(async (projectKey: string, options: any) => {
     await listProjectIssuesCommand(projectKey, options);
   });

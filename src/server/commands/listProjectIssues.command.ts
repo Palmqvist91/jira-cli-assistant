@@ -1,3 +1,4 @@
+import inquirer from "inquirer";
 import chalk from "chalk";
 import { JiraService } from "../services/jira.service";
 import { getProjectKeyHelper } from "../helper/getProjectKey.helper";
@@ -5,9 +6,53 @@ import { getProjectKeyHelper } from "../helper/getProjectKey.helper";
 export async function listProjectIssuesCommand(projectKey: string, options: any) {
     try {
         const jiraService = new JiraService();
+
+        // Om inget projektKey anges, låt användaren välja
         const key = await getProjectKeyHelper(projectKey);
-        console.log(`📂 Fetching issues for project: ${key} ${options.status ? 'with status: ' + options.status : ''} ${options.assignee ? 'for assignee: ' + options.assignee : ''}`);
-        let issues = await jiraService.fetchProjectIssues(key);
+
+        // Om --sprint flaggan används utan värde, visa sprint-val
+        if (options.sprint === true) {
+            const sprints = await jiraService.fetchProjectSprints(key);
+
+            if (!sprints || sprints.length === 0) {
+                console.log(chalk.yellow("⚠️ No sprints found for this project."));
+                return;
+            }
+
+            const { selectedSprint } = await inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'selectedSprint',
+                    message: 'Select a sprint:',
+                    choices: sprints.map((sprint: any) => ({
+                        name: `${sprint.name} (${sprint.state})`,
+                        value: sprint.id
+                    }))
+                }
+            ]);
+
+            options.sprint = selectedSprint;
+        }
+
+        let sprintId = options.sprint;
+
+        // Om sprint anges som namn istället för ID
+        if (options.sprint && isNaN(options.sprint)) {
+            const sprints = await jiraService.fetchProjectSprints(key);
+            const sprint = sprints.find((s: any) =>
+                s.name.toLowerCase() === options.sprint.toLowerCase()
+            );
+            if (sprint) {
+                sprintId = sprint.id;
+            } else {
+                console.log(chalk.yellow(`⚠️ Sprint "${options.sprint}" not found.`));
+                return;
+            }
+        }
+
+        console.log(`📂 Fetching issues for project: ${key} ${options.status ? 'with status: ' + options.status : ''} ${options.assignee ? 'for assignee: ' + options.assignee : ''} ${sprintId ? 'in sprint: ' + options.sprint : ''}`);
+
+        let issues = await jiraService.fetchProjectIssues(key, { sprintId });
         if (!issues || issues.length === 0) {
             console.log("✅ No open issues found.");
             return;

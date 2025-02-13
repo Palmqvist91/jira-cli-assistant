@@ -49,36 +49,36 @@ After installation, you can use the following commands:
 
 - **List all projects**:
   ```bash
-  jira projects list
+  jira project list
   ```
 
 - **List issues for a project**:
   ```bash
-  jira issues list <projectKey>
+  jira issue list <projectKey>
   # Optional filters:
-  jira issues list PROJECT-KEY --status "In Progress"
-  jira issues list PROJECT-KEY --assignee "John Doe"
+  jira issue list PROJECT-KEY --status "In Progress"
+  jira issue list PROJECT-KEY --assignee "John Doe"
   ```
 
 - **Create a new issue**:
   ```bash
-  jira issues create <projectKey>
+  jira issue create <projectKey>
   # With options:
-  jira issues create PROJECT-KEY --summary "New Feature" --issueType "Story"
+  jira issue create PROJECT-KEY --summary "New Feature" --issueType "Story"
   ```
 
 - **Update an issue**:
   ```bash
-  jira issues update <issueKey>
+  jira issue update <issueKey>
   # With options:
-  jira issues update ISSUE-123 --status "Done" --assignee "John Doe"
+  jira issue update ISSUE-123 --status "Done" --assignee "John Doe"
   ```
 
 - **Delete an issue**:
   ```bash
-  jira issues delete <issueKey>
+  jira issue delete <issueKey>
   # Force delete without confirmation:
-  jira issues delete ISSUE-123 --force
+  jira issue delete ISSUE-123 --force
   ```
 
 ## Available Commands
@@ -87,13 +87,14 @@ After installation, you can use the following commands:
 jira <resource> <command> [options]
 
 Resources and Commands:
-projects
+project
   list                          List all JIRA projects
 
-issues
+issue
   list <projectKey>             List issues in a project
     -s, --status <status>       Filter issues by status
     -a, --assignee <assignee>   Filter issues by assignee
+    --sprint <sprint>           Filter issues by sprint name or ID
   create <projectKey>           Create a new issue
     -m, --summary <summary>     Set the summary
     -t, --issueType <type>      Set the issue type
