@@ -1,10 +1,12 @@
 import inquirer from "inquirer";
 import { JiraService } from "../services/jira.service";
+import { getProjectIssueHelper } from "../helper/getProjectIssueHelper";
 
 export async function deleteIssueCommand(issueKey: string, options: any) {
     try {
-        if (!issueKey) {
-            console.error("🚫 Issue KEY is required.");
+        const jiraService = new JiraService();
+        const result = await getProjectIssueHelper(jiraService, issueKey);
+        if (!result) {
             return;
         }
 
@@ -24,7 +26,6 @@ export async function deleteIssueCommand(issueKey: string, options: any) {
             }
         }
 
-        const jiraService = new JiraService();
         await jiraService.deleteIssue(issueKey);
         console.log(`✅ Issue ${issueKey} has been deleted.`);
     } catch (error) {

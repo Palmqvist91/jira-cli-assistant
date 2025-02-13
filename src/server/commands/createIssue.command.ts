@@ -4,11 +4,6 @@ import { getProjectKeyHelper } from "../helper/getProjectKey.helper";
 
 export async function createIssueCommand(projectKey: string, userInput: { summary: string, issueType: string }) {
     try {
-        if (!projectKey) {
-            console.error("🚫 Project KEY is required.");
-            return;
-        }
-
         const key = await getProjectKeyHelper(projectKey);
 
         const summary = userInput.summary || await inquirer.prompt([

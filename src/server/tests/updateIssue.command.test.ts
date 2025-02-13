@@ -21,19 +21,14 @@ describe('updateIssueCommand', () => {
         jest.clearAllMocks();
     });
 
-    it('should update an issue successfully', async () => {
+    it('should update an issue with provided options', async () => {
         // Arrange
         const mockCurrentIssue = {
             fields: {
                 summary: 'Old Summary',
-                assignee: { displayName: 'Old Assignee' }
+                status: { name: 'To Do' },
+                assignee: { accountId: 'old-assignee-id' }
             }
-        };
-
-        const mockUserInput: UpdateUserInput = {
-            summary: 'New Summary',
-            status: 'In Progress',
-            assignee: 'New Assignee'
         };
 
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.fetchSingleIssue
@@ -44,10 +39,13 @@ describe('updateIssueCommand', () => {
             .mockResolvedValue([{ name: 'New Assignee', value: 'new-assignee-id' }]);
         (JiraService as jest.MockedClass<typeof JiraService>).prototype.updateIssue
             .mockResolvedValue({ message: 'Success' });
-        (inquirer.prompt as unknown as Mock<() => Promise<UpdateUserInput>>).mockResolvedValue(mockUserInput);
 
         // Act
-        await updateIssueCommand('TEST-1', { summary: 'New Summary', status: 'In Progress', assignee: 'New Assignee' });
+        await updateIssueCommand('TEST-1', {
+            summary: 'New Summary',
+            status: 'In Progress',
+            assignee: 'New Assignee'
+        });
 
         // Assert
         expect(JiraService.prototype.updateIssue).toHaveBeenCalledWith(
@@ -57,6 +55,57 @@ describe('updateIssueCommand', () => {
             'new-assignee-id'
         );
         expect(mockConsoleLog).toHaveBeenCalledWith('✅ Issue TEST-1 has been updated.');
+    });
+
+    it('should handle interactive update when no options provided', async () => {
+        // Arrange
+        const mockCurrentIssue = {
+            fields: {
+                summary: 'Old Summary',
+                status: { name: 'To Do' },
+                assignee: { accountId: 'old-assignee-id' }
+            }
+        };
+
+        const mockUserInput = {
+            summary: 'Interactive Summary',
+            status: 'In Progress',
+            assignee: 'new-assignee-id'
+        };
+
+        (JiraService as jest.MockedClass<typeof JiraService>).prototype.fetchSingleIssue
+            .mockResolvedValue(mockCurrentIssue);
+        (JiraService as jest.MockedClass<typeof JiraService>).prototype.getProjectStatuses
+            .mockResolvedValue(['To Do', 'In Progress', 'Done']);
+        (JiraService as jest.MockedClass<typeof JiraService>).prototype.getAssignableUsers
+            .mockResolvedValue([{ name: 'New Assignee', value: 'new-assignee-id' }]);
+        (inquirer.prompt as unknown as Mock<() => Promise<UpdateUserInput>>)
+            .mockResolvedValueOnce({ summary: mockUserInput.summary } as UpdateUserInput)
+            .mockResolvedValueOnce({ status: mockUserInput.status } as UpdateUserInput)
+            .mockResolvedValueOnce({ assignee: mockUserInput.assignee } as UpdateUserInput);
+
+        // Act
+        await updateIssueCommand('TEST-1', {});
+
+        // Assert
+        expect(JiraService.prototype.updateIssue).toHaveBeenCalledWith(
+            'TEST-1',
+            mockUserInput.summary,
+            mockUserInput.status,
+            mockUserInput.assignee
+        );
+    });
+
+    it('should handle invalid issue key', async () => {
+        // Arrange
+        (JiraService as jest.MockedClass<typeof JiraService>).prototype.fetchSingleIssue
+            .mockResolvedValue(null);
+
+        // Act
+        await updateIssueCommand('INVALID-1', {});
+
+        // Assert
+        expect(JiraService.prototype.updateIssue).not.toHaveBeenCalled();
     });
 
     it('should handle errors when updating an issue', async () => {
@@ -72,6 +121,38 @@ describe('updateIssueCommand', () => {
         expect(mockConsoleError).toHaveBeenCalledWith(
             '🚫 Could not update issue:',
             mockError
+        );
+    });
+
+    it('should handle invalid assignee', async () => {
+        // Arrange
+        const mockCurrentIssue = {
+            fields: {
+                summary: 'Old Summary',
+                status: { name: 'To Do' },
+                assignee: { accountId: 'old-assignee-id' }
+            }
+        };
+
+        (JiraService as jest.MockedClass<typeof JiraService>).prototype.fetchSingleIssue
+            .mockResolvedValue(mockCurrentIssue);
+        (JiraService as jest.MockedClass<typeof JiraService>).prototype.getProjectStatuses
+            .mockResolvedValue(['To Do', 'In Progress', 'Done']);
+        (JiraService as jest.MockedClass<typeof JiraService>).prototype.getAssignableUsers
+            .mockResolvedValue([{ name: 'Other Assignee', value: 'other-assignee-id' }]);
+
+        // Act
+        await updateIssueCommand('TEST-1', {
+            summary: 'New Summary',
+            status: 'In Progress',
+            assignee: 'Invalid Assignee'
+        });
+
+        // Assert
+        expect(JiraService.prototype.updateIssue).not.toHaveBeenCalled();
+        expect(mockConsoleError).toHaveBeenCalledWith(
+            '🚫 Could not update issue:',
+            expect.any(Error)
         );
     });
 }); 

@@ -1,11 +1,16 @@
 import inquirer from "inquirer";
 import { JiraService } from "../services/jira.service";
+import { getProjectIssueHelper } from "../helper/getProjectIssueHelper";
 
 export async function updateIssueCommand(issueKey: string, options: any) {
     try {
         const jiraService = new JiraService();
+        const result = await getProjectIssueHelper(jiraService, issueKey);
+        if (!result) {
+            return;
+        }
 
-        const currentIssue = await jiraService.fetchSingleIssue(issueKey);
+        const currentIssue = result.issue;
         const currentSummary = currentIssue.fields.summary;
         const currentAssignee = currentIssue.fields.assignee?.accountId || 'Unassigned';
         const statuses = await jiraService.getProjectStatuses(issueKey.split('-')[0]);
