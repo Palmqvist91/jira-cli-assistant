@@ -14,13 +14,13 @@ export async function getProjectKey(projectKey?: string): Promise<string> {
         const projectExists = projects.some((project: any) => project.key === projectKey);
 
         if (!projectExists) {
-            console.error(`🚫 Project key "${projectKey}" does not exist.`);
+            console.error(`🚫 Project KEY "${projectKey}" does not exist.`);
             console.log("Please select from available projects:");
             return promptForProject(projects);
         }
         return projectKey;
     } else {
-        console.log("❓ No projectKey provided. Please select a project:");
+        console.log("❓ No project KEY provided. Please select a project:");
         return promptForProject(projects);
     }
 }
