@@ -19,10 +19,10 @@ export async function getProjectKey(projectKey?: string): Promise<string> {
             return promptForProject(projects);
         }
         return projectKey;
+    } else {
+        console.log("❓ No projectKey provided. Please select a project:");
+        return promptForProject(projects);
     }
-
-    console.log("❓ No projectKey provided. Please select a project:");
-    return promptForProject(projects);
 }
 
 async function promptForProject(projects: any[]): Promise<string> {
