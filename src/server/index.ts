@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import path from "path";
 import dotenv from "dotenv";
-import { program } from "commander";
+import { Command } from 'commander';
+import chalk from 'chalk';
 import { setupConfig } from "./config/index.config";
 import { welcomText, helpText } from "./commands/text.command";
 import { allProjectsCommand } from "./commands/allProjects.command";
@@ -13,19 +14,42 @@ import { listProjectSprintsCommand } from "./commands/listProjectSprints.command
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-program
-  .name("jira-cli-assistant")
-  .version("1.0.0")
-  .description("A CLI tool for Jira created by PrHiGo 🔥. Use this tool to manage your Jira projects and issues directly from the command line 💻.");
+const program = new Command();
 
-// Welcome message if no command is provided
+program
+  .name('jira')
+  .description('JIRA CLI Assistant')
+  .version('1.0.0')
+  .showHelpAfterError(`${chalk.yellow('(add --help for additional information)')}`)
+  .configureHelp({
+    sortSubcommands: true,
+    subcommandTerm: (cmd) => chalk.cyan(cmd.name()),
+    commandUsage: (cmd) => chalk.yellow(cmd.usage()),
+    argumentDescription: (arg) => chalk.green(arg),
+    optionDescription: (opt) => chalk.green(opt),
+    subcommandDescription: (cmd) => chalk.blue(cmd.description()),
+  })
+  .helpCommand(true)
+  .on('command:*', () => {
+    console.error(chalk.red('\n❌ Invalid command'));
+    console.log(chalk.yellow('\n📚 Available commands:'));
+    helpText();
+    process.exit(1);
+  });
+
+if (process.argv.length <= 2) {
+  console.log(chalk.yellow('❓ No command specified.'));
+  console.log(chalk.yellow('\nAvailable commands:'));
+  helpText();
+  process.exit(1);
+}
+
 program
   .description("Welcome to Jira CLI Assistant! 🚀")
   .action(async () => {
     await welcomText();
   });
 
-// Set up your JIRA configuration
 program
   .command("config")
   .description("Set up your JIRA configuration")
@@ -34,7 +58,6 @@ program
     await setupConfig(options);
   });
 
-// Projects commands
 const projectsCommand = program
   .command("projects")
   .alias("project")
@@ -56,7 +79,6 @@ projectsCommand
     await listProjectSprintsCommand(projectKey);
   });
 
-// Issues commands
 const issuesCommand = program
   .command("issues")
   .alias("issue")
@@ -99,7 +121,6 @@ issuesCommand
     await deleteIssueCommand(issueKey, options);
   });
 
-// Add additional help text
 program
   .command("help")
   .description("Display additional help text")

@@ -1,16 +1,18 @@
+import chalk from "chalk";
+
 export async function helpText() {
-    console.log(`
-                Welcome to Jira CLI Assistant! 🚀
+  console.log(`
+                ${chalk.bold('Welcome to Jira CLI Assistant!')} 🚀
                                     
                          by PrHiGo
 
-    Here are some example commands you can run:
-    - jira project list                 List all projects
-    - jira project sprints <projectKey> List all sprints for a project
-    - jira issue list <projectKey>      List issues in a project
-    - jira issue create <projectKey>    Create a new issue
-    - jira issue update <issueKey>      Update an issue
-    - jira issue delete <issueKey>      Delete an issue
+    ${chalk.yellow('Here are some example commands you can run:')}
+    - ('jira project list')                    ${chalk.dim('List all projects')}
+    - ('jira project sprints')} ${chalk.cyan('<projectKey>')}   ${chalk.dim('List all sprints for a project')}
+    - ('jira issue list')} ${chalk.cyan('<projectKey>')}        ${chalk.dim('List issues in a project')}
+    - ('jira issue create')} ${chalk.cyan('<projectKey>')}      ${chalk.dim('Create a new issue')}
+    - ('jira issue update')} ${chalk.cyan('<issueKey>')}        ${chalk.dim('Update an issue')}
+    - ('jira issue delete')} ${chalk.cyan('<issueKey>')}        ${chalk.dim('Delete an issue')}
 
 
     Usage:
@@ -18,32 +20,32 @@ export async function helpText() {
 
     Resources and Commands:
     project
-      list                          List all JIRA projects
-      sprint <projectKey>           List all sprints for a project
+      list                          ${chalk.dim('List all JIRA projects')}
+      sprint ${chalk.cyan('<projectKey>')}           ${chalk.dim('List all sprints for a project')}
 
     issue
-      list <projectKey>             List issues in a project
-        -s, --status <status>       Filter issues by status
-        -a, --assignee <assignee>   Filter issues by assignee
-        --sprint <sprint>           Filter issues by sprint name or ID
-      create <projectKey>           Create a new issue
-        -m, --summary <summary>     Set the summary
-        -t, --issueType <type>      Set the issue type
-      update <issueKey>             Update an issue
-        -s, --status <status>       Set the status
-        -a, --assignee <assignee>   Set the assignee
-        -m, --summary <summary>     Update the summary
-      delete <issueKey>             Delete an issue
-        --force                     Force delete without confirmation
+      list ${chalk.cyan('<projectKey>')}             ${chalk.dim('List issues in a project')}
+        -s, --status ${chalk.cyan('<status>')}       ${chalk.dim('Filter issues by status')}
+        -a, --assignee ${chalk.cyan('<assignee>')}   ${chalk.dim('Filter issues by assignee')}
+        --sprint ${chalk.cyan('<sprint>')}           ${chalk.dim('Filter issues by sprint name or ID')}
+      create ${chalk.cyan('<projectKey>')}           ${chalk.dim('Create a new issue')}  
+        -m, --summary ${chalk.cyan('<summary>')}     ${chalk.dim('Set the summary')}
+        -t, --issueType ${chalk.cyan('<type>')}      ${chalk.dim('Set the issue type')}
+      update ${chalk.cyan('<issueKey>')}             ${chalk.dim('Update an issue')}
+        -s, --status ${chalk.cyan('<status>')}       ${chalk.dim('Set the status')}
+        -a, --assignee ${chalk.cyan('<assignee>')}   ${chalk.dim('Set the assignee')}
+        -m, --summary ${chalk.cyan('<summary>')}     ${chalk.dim('Update the summary')}
+      delete ${chalk.cyan('<issueKey>')}             ${chalk.dim('Delete an issue')}
+        --force                     ${chalk.dim('Force delete without confirmation')}
 
-    config                          Set up your JIRA configuration
+    config                          ${chalk.dim('Set up your JIRA configuration')}
 
     Examples:
     $ jira projects list
-    $ jira issue list PROJECT-KEY --status "In Progress"
-    $ jira issue create PROJECT-KEY --summary "New Feature" --issueType "Story"
-    $ jira issue update ISSUE-123 --status "Done"
-    $ jira issue delete ISSUE-123 --force
+    $ jira issue list ${chalk.cyan('<projectKey>')} --status ${chalk.cyan('<status>')}
+    $ jira issue create ${chalk.cyan('<projectKey>')} --summary ${chalk.cyan('<summary>')} --issueType ${chalk.cyan('<type>')}
+    $ jira issue update ${chalk.cyan('<issueKey>')} --status ${chalk.cyan('<status>')}
+    $ jira issue delete ${chalk.cyan('<issueKey>')} --force
 
     For more information on a specific command, run:
     $ jira <resource> <command> --help
@@ -51,19 +53,19 @@ export async function helpText() {
 }
 
 export async function welcomText() {
-    console.log(`
-                Welcome to Jira CLI Assistant! 🚀
+  console.log(`
+                ${chalk.bold('Welcome to Jira CLI Assistant!')} 🚀
         
                          by PrHiGo
 
-  Here are some example commands you can run:
-  - jira project list                   List all projects
-  - jira project sprints <projectKey>   List all sprints for a project
-  - jira issue list <projectKey>        List open issues for a project
-  - jira issue create <projectKey>      Create a new issue
-  - jira issue update <issueKey>        Update an existing issue
-  - jira issue delete <issueKey>        Delete an issue
+  ${chalk.yellow('Here are some example commands you can run:')}
+  - ('jira project list')}                   ${chalk.dim('List all projects')}
+  - ('jira project sprints')} ${chalk.cyan('<projectKey>')}   ${chalk.dim('List all sprints for a project')}
+  - ('jira issue list')} ${chalk.cyan('<projectKey>')}        ${chalk.dim('List open issues for a project')}
+  - ('jira issue create')} ${chalk.cyan('<projectKey>')}      ${chalk.dim('Create a new issue')}
+  - ('jira issue update')} ${chalk.cyan('<issueKey>')}        ${chalk.dim('Update an existing issue')}
+  - ('jira issue delete')} ${chalk.cyan('<issueKey>')}        ${chalk.dim('Delete an issue')}
 
-            For more information, run: jira help
+            ${chalk.yellow('For more information, run: jira help')}
 `);
 }

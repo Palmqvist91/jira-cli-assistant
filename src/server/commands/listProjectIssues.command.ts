@@ -81,13 +81,13 @@ export async function listProjectIssuesCommand(projectKey: string, options: any)
         });
 
         const headers = ['Index', 'Key', 'Summary', 'Status', 'Assignee'];
-        const columnWidths = [10, 15, 45, 25, 20];
+        const columnWidths = [10, 25, 40, 15, 20];
 
         const formattedData = issues.map((issue: any) => [
-            issue.key,
-            issue.fields.summary.substring(0, 40),
-            issue.fields.status.name,
-            issue.fields.assignee?.displayName || 'Unassigned'
+            chalk.cyan(issue.key),
+            issue.fields.summary.substring(0, 40) + (issue.fields.summary.length > 40 ? '...' : ''),
+            getStatusColor(issue.fields.status.name)(issue.fields.status.name),
+            issue.fields.assignee?.displayName || chalk.gray('Unassigned')
         ]);
 
         const rows = formattedData.map((row: any, rowIndex: number) => {
@@ -96,9 +96,9 @@ export async function listProjectIssuesCommand(projectKey: string, options: any)
             const formattedRow = row.map((cell: any, i: number) => {
                 const cellStr = String(cell || '');
                 if (i === 0) {
-                    return cellStr.padEnd(15);
+                    return cellStr.padEnd(25);
                 } else if (i === 1) {
-                    return cellStr.padEnd(45);
+                    return cellStr.padEnd(50);
                 } else if (i === 2) {
                     return cellStr.padEnd(25);
                 } else {
@@ -115,5 +115,20 @@ export async function listProjectIssuesCommand(projectKey: string, options: any)
         console.log(`\n${headerLine}\n${rows.join('\n')}`);
     } catch (error) {
         console.error("🚫 Could not fetch issues:", error);
+    }
+}
+
+function getStatusColor(status: string) {
+    switch (status.toLowerCase()) {
+        case 'done':
+            return chalk.green;
+        case 'in progress':
+            return chalk.yellow;
+        case 'to do':
+            return chalk.white;
+        case 'blocked':
+            return chalk.red;
+        default:
+            return chalk.white;
     }
 }

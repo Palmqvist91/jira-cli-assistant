@@ -22,7 +22,7 @@ export async function allProjectsCommand() {
         ];
 
         const formattedData = projects.map((project: any) => [
-            project.key,
+            chalk.cyan(project.key),
             project.name || '',
             project.lead?.displayName || 'N/A'
         ]);
@@ -33,7 +33,7 @@ export async function allProjectsCommand() {
             const formattedRow = row.map((cell: any, i: number) => {
                 const cellStr = String(cell || '');
                 if (i === 0) {
-                    return cellStr.padEnd(15);
+                    return cellStr.padEnd(25);
                 } else if (i === 1) {
                     return cellStr.padEnd(35);
                 } else {

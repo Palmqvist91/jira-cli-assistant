@@ -20,10 +20,10 @@ export async function listProjectSprintsCommand(projectKey: string) {
         const columnWidths = [10, 30, 15, 20, 20];
 
         const formattedData = sprints.map((sprint: any) => [
-            sprint.name,
-            sprint.state,
-            sprint.startDate ? new Date(sprint.startDate).toLocaleDateString() : 'N/A',
-            sprint.endDate ? new Date(sprint.endDate).toLocaleDateString() : 'N/A'
+            chalk.cyan(sprint.name),
+            getSprintStateColor(sprint.state)(sprint.state),
+            sprint.startDate ? chalk.yellow(new Date(sprint.startDate).toLocaleDateString()) : chalk.gray('N/A'),
+            sprint.endDate ? chalk.yellow(new Date(sprint.endDate).toLocaleDateString()) : chalk.gray('N/A')
         ]);
 
         const rows = formattedData.map((row: any, rowIndex: number) => {
@@ -31,9 +31,9 @@ export async function listProjectSprintsCommand(projectKey: string) {
             const indexCol = chalk.white(`[${indexNum.toString().padStart(1)}]`.padEnd(10));
             const formattedRow = row.map((cell: any, i: number) => {
                 const cellStr = String(cell || '');
-                if (i === 0) return cellStr.padEnd(30);
-                if (i === 1) return cellStr.padEnd(15);
-                return cellStr.padEnd(20);
+                if (i === 0) return cellStr.padEnd(40);
+                if (i === 1) return cellStr.padEnd(25);
+                return cellStr.padEnd(30);
             }).join('');
             return `${indexCol}${formattedRow}`;
         });
@@ -41,5 +41,18 @@ export async function listProjectSprintsCommand(projectKey: string) {
         console.log(formatTable(headers, rows, columnWidths));
     } catch (error) {
         console.error(chalk.red("🚫 Could not fetch sprints:", (error as Error).message));
+    }
+}
+
+function getSprintStateColor(state: string) {
+    switch (state.toLowerCase()) {
+        case 'active':
+            return chalk.green;
+        case 'future':
+            return chalk.blue;
+        case 'closed':
+            return chalk.gray;
+        default:
+            return chalk.white;
     }
 } 

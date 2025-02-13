@@ -22,10 +22,10 @@ npm install -g jira-cli-assistant
 
 To run Jira CLI Assistant, you need to configure the following environment variables using the `jira config` command.
 
-The required inputs is:
-Enter your JIRA URL (e.g., https://yourcompany.atlassian.net)
-Enter your JIRA email
-Enter your JIRA API token
+The required inputs are:
+- Enter your JIRA URL (e.g., https://yourcompany.atlassian.net)
+- Enter your JIRA email
+- Enter your JIRA API token
 
 ### Getting a JIRA API Token
 
@@ -39,7 +39,7 @@ Enter your JIRA API token
 
 ## Usage
 
-After installation, you can use the following commands:
+After installation, you can use the following commands:<br>
 (for more info and useful flags use `jira help`)
 
 - **Configure Jira**:
@@ -55,6 +55,7 @@ After installation, you can use the following commands:
 - **List issues for a project**:
   ```bash
   jira issue list <projectKey>
+
   # Optional filters:
   jira issue list PROJECT-KEY --status "In Progress"
   jira issue list PROJECT-KEY --assignee "John Doe"
@@ -63,6 +64,7 @@ After installation, you can use the following commands:
 - **Create a new issue**:
   ```bash
   jira issue create <projectKey>
+
   # With options:
   jira issue create PROJECT-KEY --summary "New Feature" --issueType "Story"
   ```
@@ -70,6 +72,7 @@ After installation, you can use the following commands:
 - **Update an issue**:
   ```bash
   jira issue update <issueKey>
+
   # With options:
   jira issue update ISSUE-123 --status "Done" --assignee "John Doe"
   ```
@@ -77,6 +80,7 @@ After installation, you can use the following commands:
 - **Delete an issue**:
   ```bash
   jira issue delete <issueKey>
+  
   # Force delete without confirmation:
   jira issue delete ISSUE-123 --force
   ```
@@ -89,6 +93,7 @@ jira <resource> <command> [options]
 Resources and Commands:
 project
   list                          List all JIRA projects
+  sprint <projectKey>           List all sprints for a project
 
 issue
   list <projectKey>             List issues in a project
