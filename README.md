@@ -49,7 +49,7 @@ After installation, you can use the following commands:
 
 - **List all projects**:
   ```bash
-  jira projects
+  jira project
   ```
 
 - **List issues for a project**:

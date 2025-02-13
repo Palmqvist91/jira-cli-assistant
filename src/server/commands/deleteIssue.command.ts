@@ -3,6 +3,11 @@ import { JiraService } from "../services/jira.service";
 
 export async function deleteIssueCommand(issueKey: string, options: any) {
     try {
+        if (!issueKey) {
+            console.error("🚫 Issue KEY is required.");
+            return;
+        }
+
         if (!options.force) {
             const { confirm } = await inquirer.prompt([
                 {
