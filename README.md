@@ -5,7 +5,7 @@ Jira CLI Assistant is a command-line tool for interacting with the Jira API. It 
 ## Features
 
 - List all Jira projects
-- List open issues for a specific project
+- List issues for a specific project with filtering options
 - Create new issues in a project
 - Update existing issues
 - Delete issues
@@ -49,28 +49,61 @@ After installation, you can use the following commands:
 
 - **List all projects**:
   ```bash
-  jira project
+  jira projects list
   ```
 
 - **List issues for a project**:
   ```bash
-  jira list <projectKey>
+  jira issues list <projectKey>
+  # Optional filters:
+  jira issues list PROJECT-KEY --status "In Progress"
+  jira issues list PROJECT-KEY --assignee "John Doe"
   ```
 
 - **Create a new issue**:
   ```bash
-  jira create <projectKey>
+  jira issues create <projectKey>
+  # With options:
+  jira issues create PROJECT-KEY --summary "New Feature" --issueType "Story"
   ```
 
 - **Update an issue**:
   ```bash
-  jira update <issueKey>
+  jira issues update <issueKey>
+  # With options:
+  jira issues update ISSUE-123 --status "Done" --assignee "John Doe"
   ```
 
 - **Delete an issue**:
   ```bash
-  jira delete <issueKey>
+  jira issues delete <issueKey>
+  # Force delete without confirmation:
+  jira issues delete ISSUE-123 --force
   ```
+
+## Available Commands
+
+```bash
+jira <resource> <command> [options]
+
+Resources and Commands:
+projects
+  list                       List all JIRA projects
+
+issues
+  list <projectKey>          List issues in a project
+    -s, --status <status>    Filter issues by status
+    -a, --assignee <assignee> Filter issues by assignee
+  create <projectKey>        Create a new issue
+    -m, --summary <summary>  Set the summary
+    -t, --issueType <type>  Set the issue type
+  update <issueKey>          Update an issue
+    -s, --status <status>    Set the status
+    -a, --assignee <assignee> Set the assignee
+    -m, --summary <summary>  Update the summary
+  delete <issueKey>          Delete an issue
+    --force                  Force delete without confirmation
+```
 
 ## License
 

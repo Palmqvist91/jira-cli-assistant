@@ -1,45 +1,49 @@
 export async function helpText() {
     console.log(`
-                    Welcome to Jira CLI Assistant! 🚀
-            
-                            by PrHiGo
+            Welcome to Jira CLI Assistant! 🚀
+                                
+                      by PrHiGo
 
-            Here are some example commands you can run:
-            - jira project               List all projects
-            - jira list <projectKey>     List open issues for a project
-            - jira create <projectKey>   Create a new issue
-            - jira update <issueKey>     Update an existing issue
-            - jira delete <issueKey>     Delete an issue
+    Here are some example commands you can run:
+    - jira projects list           List all projects
+    - jira issues list <projectKey> List issues in a project
+    - jira issues create <projectKey> Create a new issue
+    - jira issues update <issueKey> Update an issue
+    - jira issues delete <issueKey> Delete an issue
 
 
     Usage:
-    $ jira <command> [options]
+    $ jira <resource> <command> [options]
 
-    Commands:
-    project                      List all JIRA projects
-    list <projectKey>            List open issues for a specific JIRA project
-        -s, --status <status>      List issues by status
-        -a, --assignee <assignee>  List issues by assignee
-    create <projectKey>          Create a new issue in a specific project
-        -m, --summary <summary>    Set the summary of the issue
-        -t, --issueType <issueType> Set the issue type of the issue
-    update <issueKey>            Update a specific issue
-        -s, --status <status>      Set the status of the issue
-        -a, --assignee <assignee>  Set the assignee of the issue
-        -m, --summary <summary>    Set the summary of the issue
-    delete <issueKey>            Delete a specific issue
-        --force                    Force delete the issue without confirmation
+    Resources and Commands:
+    projects
+      list                       List all JIRA projects
+
+    issues
+      list <projectKey>          List issues in a project
+        -s, --status <status>    Filter issues by status
+        -a, --assignee <assignee> Filter issues by assignee
+      create <projectKey>        Create a new issue
+        -m, --summary <summary>  Set the summary
+        -t, --issueType <type>  Set the issue type
+      update <issueKey>          Update an issue
+        -s, --status <status>    Set the status
+        -a, --assignee <assignee> Set the assignee
+        -m, --summary <summary>  Update the summary
+      delete <issueKey>          Delete an issue
+        --force                  Force delete without confirmation
+
     config                       Set up your JIRA configuration
 
     Examples:
-    $ jira project
-    $ jira list <projectKey> --status "In Progress"
-    $ jira create <projectKey> --summary "New Feature" --issueType "Story"
-    $ jira update <issueKey> --status "Done"
-    $ jira delete <issueKey> --force
+    $ jira projects list
+    $ jira issues list PROJECT-KEY --status "In Progress"
+    $ jira issues create PROJECT-KEY --summary "New Feature" --issueType "Story"
+    $ jira issues update ISSUE-123 --status "Done"
+    $ jira issues delete ISSUE-123 --force
 
     For more information on a specific command, run:
-    $ jira <command> --help
+    $ jira <resource> <command> --help
     `);
 }
 

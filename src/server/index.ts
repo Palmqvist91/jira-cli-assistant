@@ -33,39 +33,46 @@ program
     await setupConfig(options);
   });
 
-// List projects
-program
-  .command("project")
-  .alias("projects")
-  .description("Lists all JIRA projects")
+// Projects commands
+const projectsCommand = program
+  .command("projects")
+  .alias("project")
+  .description("Manage JIRA projects");
+
+projectsCommand
+  .command("list")
+  .description("List all JIRA projects")
   .action(async () => {
     await allProjectsCommand();
   });
 
-// List issues
-program
-  .command("list [projectKey]")
-  .description("Lists open issues for a specific JIRA project")
-  .option("-s, --status <status>", "List issues by status")
-  .option("-a, --assignee <assignee>", "List issues by assignee")
+// Issues commands
+const issuesCommand = program
+  .command("issues")
+  .alias("issue")
+  .description("Manage JIRA issues");
+
+issuesCommand
+  .command("list")
+  .argument("[projectKey]", "Project key to list issues from")
+  .option("-s, --status <status>", "Filter issues by status")
+  .option("-a, --assignee <assignee>", "Filter issues by assignee")
   .action(async (projectKey: string, options: any) => {
     await listProjectIssuesCommand(projectKey, options);
   });
 
-// Create a new issue
-program
-  .command("create <projectKey>")
-  .description("Creates a new issue in a specific project")
+issuesCommand
+  .command("create")
+  .argument("<projectKey>", "Project key to create issue in")
   .option("-m, --summary <summary>", "Set the summary of the issue")
-  .option("-t, --issueType <issueType>", "Set the issue type of the issue")
+  .option("-t, --issueType <issueType>", "Set the issue type")
   .action(async (projectKey: string, options: any) => {
     await createIssueCommand(projectKey, options);
   });
 
-// Update an issue with flags
-program
-  .command("update <issueKey>")
-  .description("Updates a specific issue")
+issuesCommand
+  .command("update")
+  .argument("<issueKey>", "Issue key to update")
   .option("-s, --status <status>", "Set the status of the issue")
   .option("-a, --assignee <assignee>", "Set the assignee of the issue")
   .option("-m, --summary <summary>", "Set the summary of the issue")
@@ -73,11 +80,10 @@ program
     await updateIssueCommand(issueKey, options);
   });
 
-// Delete an issue
-program
-  .command("delete <issueKey>")
-  .description("Deletes a specific issue")
-  .option("--force", "Force delete the issue without confirmation")
+issuesCommand
+  .command("delete")
+  .argument("<issueKey>", "Issue key to delete")
+  .option("--force", "Force delete without confirmation")
   .action(async (issueKey: string, options: any) => {
     await deleteIssueCommand(issueKey, options);
   });
