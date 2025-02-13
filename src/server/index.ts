@@ -36,6 +36,7 @@ program
 // List projects
 program
   .command("project")
+  .alias("projects")
   .description("Lists all JIRA projects")
   .action(async () => {
     await allProjectsCommand();
