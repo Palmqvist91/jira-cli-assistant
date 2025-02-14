@@ -32,17 +32,23 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Run tests
+        run: npm test
+
       - name: Configure Git
+        if: success()
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Bump version (patch) and push
+        if: success()
         run: |
           npm version patch -m "chore(release): %s [skip ci]"
           git push origin main --tags
 
       - name: Publish to npm
+        if: success()
         run: npm publish --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
