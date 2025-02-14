@@ -8,16 +8,151 @@ import axios from "axios";
 
 const configFilePath = path.join(os.homedir(), ".jira-cli-config.json");
 
-export async function setupConfig(this: any, options: any) {
+export async function setupConfig(options: any) {
     try {
+        if (!options.reset && !options.switch) {
+            if (fs.existsSync(configFilePath)) {
+                const realPath = fs.realpathSync(configFilePath);
+                const activeProfile = path.basename(realPath, '.json');
+                console.log(chalk.blue(`Active configuration profile: ${chalk.cyan(activeProfile)}`));
+                console.log(chalk.yellow(`Tip: Use 'jira config --switch' to switch between profiles.\n`));
+            }
+
+            const { action } = await inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'action',
+                    message: 'What would you like to do?',
+                    choices: [
+                        { name: 'Create new configuration', value: 'create' },
+                        { name: 'Switch configuration', value: 'switch' },
+                        { name: 'Delete configuration', value: 'delete' },
+                        { name: 'Cancel', value: 'cancel' }
+                    ]
+                }
+            ]);
+
+            if (action === 'cancel') {
+                return;
+            } else if (action === 'switch') {
+                options.switch = true;
+                return await setupConfig(options);
+            } else if (action === 'delete') {
+                options.reset = true;
+                return await setupConfig(options);
+            } else if (action === 'create') {
+                return;
+            }
+        }
+
         if (options.reset) {
+            const configDir = path.join(os.homedir(), '.jira-cli');
+
+            if (!fs.existsSync(configDir)) {
+                console.log(chalk.red("❌ No configuration profiles found."));
+                return;
+            }
+
+            const profiles = fs.readdirSync(configDir)
+                .filter(file => file.endsWith('.json'))
+                .map(file => file.replace('.json', ''));
+
+            if (profiles.length === 0) {
+                console.log(chalk.red("❌ No configuration profiles found."));
+                return;
+            }
+
+            const { selectedProfile } = await inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'selectedProfile',
+                    message: 'Select a configuration profile to delete:',
+                    choices: profiles
+                }
+            ]);
+
+            const { confirm } = await inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'confirm',
+                    message: chalk.red(`Are you sure you want to delete profile '${selectedProfile}'?`),
+                    default: false
+                }
+            ]);
+
+            if (!confirm) {
+                console.log(chalk.yellow("⚠️ Deletion cancelled."));
+                return;
+            }
+
+            const configPath = path.join(configDir, `${selectedProfile}.json`);
+            fs.unlinkSync(configPath);
+
+            if (fs.existsSync(configFilePath)) {
+                const realPath = fs.realpathSync(configFilePath);
+                if (realPath === configPath) {
+                    fs.unlinkSync(configFilePath);
+                }
+            }
+
+            console.log(chalk.green(`✅ Configuration profile '${selectedProfile}' deleted successfully.`));
+            return;
+        }
+
+        if (options.switch === true) {
+            const configDir = path.join(os.homedir(), '.jira-cli');
+
+            if (!fs.existsSync(configDir)) {
+                console.log(chalk.red("❌ No configuration profiles found."));
+                console.log(chalk.red("Release note (1.0.9): Reset config with --reset and create a new profile with --config to enable switching between profiles."));
+                return;
+            }
+
+            const profiles = fs.readdirSync(configDir)
+                .filter(file => file.endsWith('.json'))
+                .map(file => file.replace('.json', ''));
+
+            if (profiles.length === 0) {
+                console.log(chalk.red("❌ No configuration profiles found."));
+                return;
+            }
+
+            const { selectedProfile } = await inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'selectedProfile',
+                    message: 'Select a configuration profile:',
+                    choices: profiles
+                }
+            ]);
+
             fs.unlinkSync(configFilePath);
-            console.log("🔧 Configuration reset successfully.");
+            fs.symlinkSync(path.join(configDir, `${selectedProfile}.json`), configFilePath);
+            console.log(chalk.green(`✅ Switched to configuration profile: ${selectedProfile}`));
+            return;
+        } else if (options.switch) {
+            const configDir = path.join(os.homedir(), '.jira-cli');
+            const configPath = path.join(configDir, `${options.switch}.json`);
+
+            if (!fs.existsSync(configPath)) {
+                console.log(chalk.red(`❌ Configuration profile '${options.switch}' not found.`));
+                return;
+            }
+
+            fs.unlinkSync(configFilePath);
+            fs.symlinkSync(configPath, configFilePath);
+            console.log(chalk.green(`✅ Switched to configuration profile: ${options.switch}`));
             return;
         }
 
         console.log("🔧 Running setupConfig...");
         const answers = await inquirer.prompt([
+            {
+                type: "input",
+                name: "profileName",
+                message: "Enter a name for this configuration profile (default: default):",
+                default: "default"
+            },
             {
                 type: "input",
                 name: "jiraUrl",
@@ -61,8 +196,22 @@ export async function setupConfig(this: any, options: any) {
 
         try {
             await jiraService['client'].get('/rest/api/3/myself');
-            fs.writeFileSync(configFilePath, JSON.stringify(answers, null, 2));
-            console.log(chalk.green("✅ Configuration saved successfully."));
+            const configDir = path.join(os.homedir(), '.jira-cli');
+            if (!fs.existsSync(configDir)) {
+                fs.mkdirSync(configDir, { recursive: true });
+            }
+
+            const configPath = path.join(configDir, `${answers.profileName}.json`);
+            fs.writeFileSync(configPath, JSON.stringify(answers, null, 2));
+
+            if (fs.existsSync(configFilePath)) {
+                fs.unlinkSync(configFilePath);
+            }
+            fs.symlinkSync(configPath, configFilePath);
+
+            console.log(chalk.green(`✅ Configuration saved as profile: ${answers.profileName}`));
+            console.log(chalk.blue(`ℹ️  This is now your active configuration.`));
+            console.log(chalk.yellow(`💡 Tip: Use 'jira config --switch' to switch between profiles.`));
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 401) {

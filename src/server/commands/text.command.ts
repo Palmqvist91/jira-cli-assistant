@@ -18,6 +18,13 @@ export async function helpText() {
     Usage:
     $ jira <resource> <command> [options]
 
+    Set up your JIRA configuration:
+    $ jira config
+    
+    Switch between profiles:
+    $ jira config --switch <profileName>
+    $ jira config --reset
+
     Resources and Commands:
     project
       list                          ${chalk.dim('List all JIRA projects')}

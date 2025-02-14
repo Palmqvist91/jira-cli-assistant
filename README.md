@@ -2,6 +2,10 @@
 
 Jira CLI Assistant is a command-line tool for interacting with the Jira API. It is built with TypeScript and offers a simple and efficient way to manage Jira projects and issues directly from the terminal.
 
+## Release notes
+
+- 1.0.9: Added support for switching between profiles and resetting config.
+
 ## Features
 
 - List all Jira projects
@@ -30,8 +34,8 @@ The required inputs are:
 ### Getting a JIRA API Token
 
 1. Log in to your Jira account.
-2. Click on your profile icon in the bottom left corner and select **Account settings**.
-3. Navigate to **Security** on the left sidebar.
+2. Click on your profile icon in the upper right corner and select **Account settings**.
+3. Navigate to **Security**.
 4. Scroll down to the **API token** section and click on **Create and manage API tokens**.
 5. Click on **Create API token**.
 6. Enter a label for your token and click **Create**.
@@ -89,6 +93,12 @@ After installation, you can use the following commands:<br>
 
 ```bash
 jira <resource> <command> [options]
+
+# Switch between profiles:
+jira config --switch <profileName>
+
+# Reset config:
+jira config --reset
 
 Resources and Commands:
 project

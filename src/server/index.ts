@@ -54,6 +54,7 @@ program
   .command("config")
   .description("Set up your JIRA configuration")
   .option("--reset", "Reset the configuration")
+  .option("--switch [name]", "Switch to a different configuration profile")
   .action(async (options: any) => {
     await setupConfig(options);
   });

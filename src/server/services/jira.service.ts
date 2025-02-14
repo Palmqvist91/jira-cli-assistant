@@ -167,7 +167,6 @@ export class JiraService {
 
     async fetchProjectSprints(projectKey: string) {
         try {
-            // Först hämtar vi board ID för projektet
             const boardsResponse = await this.client.get(`/rest/agile/1.0/board?projectKeyOrId=${projectKey}`);
             const boards = boardsResponse.data.values;
 
@@ -175,10 +174,8 @@ export class JiraService {
                 throw new Error(`No boards found for project ${projectKey}`);
             }
 
-            // Använder första Scrum board vi hittar
             const scrumBoard = boards.find((board: any) => board.type === 'scrum') || boards[0];
 
-            // Hämta sprints för denna board
             const sprintsResponse = await this.client.get(`/rest/agile/1.0/board/${scrumBoard.id}/sprint?state=active,future`);
             return sprintsResponse.data.values;
         } catch (error) {

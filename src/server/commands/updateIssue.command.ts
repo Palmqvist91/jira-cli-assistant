@@ -16,18 +16,15 @@ export async function updateIssueCommand(issueKey: string, options: any) {
         const statuses = await jiraService.getProjectStatuses(issueKey.split('-')[0]);
         const users = await jiraService.getAssignableUsers(issueKey);
 
-        // Map users to a format suitable for inquirer
         const userChoices = users.map((user: any) => ({
             name: user.name,
-            value: user.value // This should be accountId
+            value: user.value
         }));
 
-        // Use provided options or fallback to current values
         const summary = options.summary || currentSummary;
         const status = options.status || currentIssue.fields.status.name;
         const assignee = options.assignee || currentAssignee;
 
-        // If no flags are provided, prompt the user
         if (!options.summary && !options.status && !options.assignee) {
             const summaryPrompt = await inquirer.prompt([
                 { type: "input", name: "summary", message: "Enter a new summary (or keep existing):", default: currentSummary }
@@ -42,7 +39,6 @@ export async function updateIssueCommand(issueKey: string, options: any) {
 
             await jiraService.updateIssue(issueKey, summaryPrompt.summary, statusPrompt.status, assigneePrompt.assignee);
         } else {
-            // If assignee is provided as a name, find the corresponding accountId
             const assigneeId = options.assignee ? users.find((user: any) => user.name === options.assignee)?.value : assignee;
             if (!assigneeId) {
                 throw new Error(`Assignee "${options.assignee}" not found.`);

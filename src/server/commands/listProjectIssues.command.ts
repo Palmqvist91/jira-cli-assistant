@@ -7,10 +7,8 @@ export async function listProjectIssuesCommand(projectKey: string, options: any)
     try {
         const jiraService = new JiraService();
 
-        // Om inget projektKey anges, låt användaren välja
         const key = await getProjectKeyHelper(projectKey);
 
-        // Om --sprint flaggan används utan värde, visa sprint-val
         if (options.sprint === true) {
             const sprints = await jiraService.fetchProjectSprints(key);
 
@@ -36,7 +34,6 @@ export async function listProjectIssuesCommand(projectKey: string, options: any)
 
         let sprintId = options.sprint;
 
-        // Om sprint anges som namn istället för ID
         if (options.sprint && isNaN(options.sprint)) {
             const sprints = await jiraService.fetchProjectSprints(key);
             const sprint = sprints.find((s: any) =>

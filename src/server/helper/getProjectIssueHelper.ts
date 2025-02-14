@@ -1,7 +1,6 @@
 import { JiraService } from "@server/services/jira.service";
 
 export async function getProjectIssueHelper(jiraService: JiraService, issueKey: string) {
-    // Validate issue key format first
     if (!issueKey.includes('-')) {
         console.error('🚫 Invalid issue key format. Expected format: PROJECT-123');
         return null;
