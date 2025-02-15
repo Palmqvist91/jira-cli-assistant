@@ -53,46 +53,46 @@ After installation, you can use the following commands:<br>
 
 - **List all projects**:
   ```bash
-  jira project list
+  jira list projects
   ```
 
 - **List issues for a project**:
   ```bash
-  jira issue list <projectKey>
+  jira list issues <projectKey>
 
   # Optional filters:
-  jira issue list PROJECT-KEY --status "In Progress"
-  jira issue list PROJECT-KEY --assignee "John Doe"
+  jira list issues PROJECT-KEY --status "In Progress"
+  jira list issues PROJECT-KEY --assignee "John Doe"
   ```
 
 - **Create a new issue**:
   ```bash
-  jira issue create <projectKey>
+  jira create issue <projectKey>
 
   # With options:
-  jira issue create PROJECT-KEY --summary "New Feature" --issueType "Story"
+  jira create issue PROJECT-KEY --summary "New Feature" --issueType "Story"
   ```
 
 - **Update an issue**:
   ```bash
-  jira issue update <issueKey>
+  jira update issue <issueKey>
 
   # With options:
-  jira issue update ISSUE-123 --status "Done" --assignee "John Doe"
+  jira update issue ISSUE-123 --status "Done" --assignee "John Doe"
   ```
 
 - **Delete an issue**:
   ```bash
-  jira issue delete <issueKey>
+  jira delete issue <issueKey>
   
   # Force delete without confirmation:
-  jira issue delete ISSUE-123 --force
+  jira delete issue ISSUE-123 --force
   ```
 
 ## Available Commands
 
 ```bash
-jira <resource> <command> [options]
+jira <verb> <resource> [options]
 
 # Switch between profiles:
 jira config --switch <profileName>
@@ -101,24 +101,28 @@ jira config --switch <profileName>
 jira config --reset
 
 Resources and Commands:
-project
-  list                          List all JIRA projects
-  sprint <projectKey>           List all sprints for a project
+list
+  projects                          List all JIRA projects
+  sprints <projectKey>             List all sprints for a project
+  issues <projectKey>              List issues in a project
+    -s, --status <status>         Filter issues by status
+    -a, --assignee <assignee>     Filter issues by assignee
+    --sprint <sprint>             Filter issues by sprint name or ID
 
-issue
-  list <projectKey>             List issues in a project
-    -s, --status <status>       Filter issues by status
-    -a, --assignee <assignee>   Filter issues by assignee
-    --sprint <sprint>           Filter issues by sprint name or ID
-  create <projectKey>           Create a new issue
-    -m, --summary <summary>     Set the summary
-    -t, --issueType <type>      Set the issue type
-  update <issueKey>             Update an issue
-    -s, --status <status>       Set the status
-    -a, --assignee <assignee>   Set the assignee
-    -m, --summary <summary>     Update the summary
-  delete <issueKey>             Delete an issue
-    --force                     Force delete without confirmation
+create
+  issue <projectKey>               Create a new issue
+    -m, --summary <summary>       Set the summary
+    -t, --issueType <type>        Set the issue type
+
+update
+  issue <issueKey>                Update an issue
+    -s, --status <status>         Set the status
+    -a, --assignee <assignee>     Set the assignee
+    -m, --summary <summary>       Update the summary
+
+delete
+  issue <issueKey>                Delete an issue
+    --force                       Force delete without confirmation
 ```
 
 ## License
