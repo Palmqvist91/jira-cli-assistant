@@ -2,9 +2,10 @@
 
 Jira CLI Assistant is a command-line tool for interacting with the Jira API. It is built with TypeScript and offers a simple and efficient way to manage Jira projects and issues directly from the terminal.
 
-## Release notes
+## Release notes (1.0.13)
 
-- 1.0.9: Added support for switching between profiles and resetting config.
+- Added `jira status` command to check JIRA profile status.
+- Refactor CLI command syntax to use verb first. e.g. `jira list projects` instead of `jira projects list`.
 
 ## Features
 
@@ -53,46 +54,46 @@ After installation, you can use the following commands:<br>
 
 - **List all projects**:
   ```bash
-  jira project list
+  jira list projects
   ```
 
 - **List issues for a project**:
   ```bash
-  jira issue list <projectKey>
+  jira list issues <projectKey>
 
   # Optional filters:
-  jira issue list PROJECT-KEY --status "In Progress"
-  jira issue list PROJECT-KEY --assignee "John Doe"
+  jira list issues PROJECT-KEY --status "In Progress"
+  jira list issues PROJECT-KEY --assignee "John Doe"
   ```
 
 - **Create a new issue**:
   ```bash
-  jira issue create <projectKey>
+  jira create issue <projectKey>
 
   # With options:
-  jira issue create PROJECT-KEY --summary "New Feature" --issueType "Story"
+  jira create issue PROJECT-KEY --summary "New Feature" --issueType "Story"
   ```
 
 - **Update an issue**:
   ```bash
-  jira issue update <issueKey>
+  jira update issue <issueKey>
 
   # With options:
-  jira issue update ISSUE-123 --status "Done" --assignee "John Doe"
+  jira update issue ISSUE-123 --status "Done" --assignee "John Doe"
   ```
 
 - **Delete an issue**:
   ```bash
-  jira issue delete <issueKey>
+  jira delete issue <issueKey>
   
   # Force delete without confirmation:
-  jira issue delete ISSUE-123 --force
+  jira delete issue ISSUE-123 --force
   ```
 
 ## Available Commands
 
 ```bash
-jira <resource> <command> [options]
+jira <verb> <resource> [options]
 
 # Switch between profiles:
 jira config --switch <profileName>
@@ -100,25 +101,32 @@ jira config --switch <profileName>
 # Reset config:
 jira config --reset
 
-Resources and Commands:
-project
-  list                          List all JIRA projects
-  sprint <projectKey>           List all sprints for a project
+# Check JIRA profile status:
+jira status
 
-issue
-  list <projectKey>             List issues in a project
-    -s, --status <status>       Filter issues by status
-    -a, --assignee <assignee>   Filter issues by assignee
-    --sprint <sprint>           Filter issues by sprint name or ID
-  create <projectKey>           Create a new issue
-    -m, --summary <summary>     Set the summary
-    -t, --issueType <type>      Set the issue type
-  update <issueKey>             Update an issue
-    -s, --status <status>       Set the status
-    -a, --assignee <assignee>   Set the assignee
-    -m, --summary <summary>     Update the summary
-  delete <issueKey>             Delete an issue
-    --force                     Force delete without confirmation
+Resources and Commands:
+list
+  projects                          List all JIRA projects
+  sprints <projectKey>             List all sprints for a project
+  issues <projectKey>              List issues in a project
+    -s, --status <status>         Filter issues by status
+    -a, --assignee <assignee>     Filter issues by assignee
+    --sprint <sprint>             Filter issues by sprint name or ID
+
+create
+  issue <projectKey>               Create a new issue
+    -m, --summary <summary>       Set the summary
+    -t, --issueType <type>        Set the issue type
+
+update
+  issue <issueKey>                Update an issue
+    -s, --status <status>         Set the status
+    -a, --assignee <assignee>     Set the assignee
+    -m, --summary <summary>       Update the summary
+
+delete
+  issue <issueKey>                Delete an issue
+    --force                       Force delete without confirmation
 ```
 
 ## License
