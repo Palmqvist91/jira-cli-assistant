@@ -247,7 +247,7 @@ function getAvailableProfiles(): string[] {
     return fs.readdirSync(configDir)
         .filter(file => file.endsWith('.json'))
         .map(file => path.basename(file, '.json'))
-        .filter(name => name !== 'config'); // Exkludera huvudkonfig-filen
+        .filter(name => name !== 'config');
 }
 
 export function formatTable(headers: string[], rows: string[], columnWidths: number[]) {

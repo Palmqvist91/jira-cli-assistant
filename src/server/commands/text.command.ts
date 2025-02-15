@@ -2,14 +2,16 @@ import chalk from "chalk";
 
 export async function helpText() {
   console.log(`
-                ${chalk.bold('Welcome to Jira CLI Assistant!')} 🚀
-                                    
-                         by PrHiGo
+                    ${chalk.bold('Welcome to Jira CLI Assistant!')} 🚀
+                                        
+                              by PrHiGo
 
-    ${chalk.yellow('Here are some example commands you can run:')}
-    - ('jira list projects')                    ${chalk.dim('List all projects')}
-    - ('jira list sprints')} ${chalk.cyan('<projectKey>')}   ${chalk.dim('List all sprints for a project')}
-    - ('jira list issues')} ${chalk.cyan('<projectKey>')}        ${chalk.dim('List issues in a project')}
+    Here are some example commands you can run:
+
+    - ('jira status')                          ${chalk.dim('Check JIRA profile status')}
+    - ('jira list projects')                   ${chalk.dim('List all projects')}
+    - ('jira list sprints')} ${chalk.cyan('<projectKey>')}      ${chalk.dim('List all sprints for a project')}
+    - ('jira list issues')} ${chalk.cyan('<projectKey>')}       ${chalk.dim('List issues in a project')}
     - ('jira create issue')} ${chalk.cyan('<projectKey>')}      ${chalk.dim('Create a new issue')}
     - ('jira update issue')} ${chalk.cyan('<issueKey>')}        ${chalk.dim('Update an issue')}
     - ('jira delete issue')} ${chalk.cyan('<issueKey>')}        ${chalk.dim('Delete an issue')}
@@ -25,11 +27,14 @@ export async function helpText() {
     $ jira config --switch <profileName>
     $ jira config --reset
 
+    Check JIRA profile status:
+    $ jira status
+
     Resources and Commands:
     list
-      projects                        ${chalk.dim('List all JIRA projects')}
-      sprints ${chalk.cyan('<projectKey>')}           ${chalk.dim('List all sprints for a project')}
-      issues ${chalk.cyan('<projectKey>')}            ${chalk.dim('List issues in a project')}
+      projects                      ${chalk.dim('List all JIRA projects')}
+      sprints ${chalk.cyan('<projectKey>')}          ${chalk.dim('List all sprints for a project')}
+      issues ${chalk.cyan('<projectKey>')}           ${chalk.dim('List issues in a project')}
         -s, --status ${chalk.cyan('<status>')}       ${chalk.dim('Filter issues by status')}
         -a, --assignee ${chalk.cyan('<assignee>')}   ${chalk.dim('Filter issues by assignee')}
         --sprint ${chalk.cyan('<sprint>')}           ${chalk.dim('Filter issues by sprint name or ID')}
@@ -70,6 +75,8 @@ export async function welcomText() {
                          by PrHiGo
 
   ${chalk.yellow('Here are some example commands you can run:')}
+
+  - ('jira status')                          ${chalk.dim('Check JIRA profile status')}
   - ('jira list projects')                   ${chalk.dim('List all projects')}
   - ('jira list sprints')} ${chalk.cyan('<projectKey>')}   ${chalk.dim('List all sprints for a project')}
   - ('jira list issues')} ${chalk.cyan('<projectKey>')}        ${chalk.dim('List open issues for a project')}

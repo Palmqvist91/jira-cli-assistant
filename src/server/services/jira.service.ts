@@ -26,6 +26,16 @@ export class JiraService {
         }
     }
 
+    async checkStatus() {
+        try {
+            const response = await this.client.get('/rest/api/3/status');
+            return response.data;
+        } catch (error) {
+            console.error("🚫 Could not check status:", error);
+            return false;
+        }
+    }
+
     async fetchAllProjects() {
         try {
             const response = await this.client.get('/rest/api/3/project');

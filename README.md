@@ -100,6 +100,9 @@ jira config --switch <profileName>
 # Reset config:
 jira config --reset
 
+# Check JIRA profile status:
+jira status
+
 Resources and Commands:
 list
   projects                          List all JIRA projects

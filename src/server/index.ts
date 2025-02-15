@@ -9,9 +9,9 @@ import { allProjectsCommand } from "./commands/allProjects.command";
 import { createIssueCommand } from "./commands/createIssue.command";
 import { updateIssueCommand } from "./commands/updateIssue.command";
 import { deleteIssueCommand } from "./commands/deleteIssue.command";
+import { checkStatusCommand } from "./commands/checkStatus.command";
 import { listProjectIssuesCommand } from "./commands/listProjectIssues.command";
 import { listProjectSprintsCommand } from "./commands/listProjectSprints.command";
-
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const program = new Command();
@@ -48,6 +48,13 @@ program
   .description("Welcome to Jira CLI Assistant! 🚀")
   .action(async () => {
     await welcomText();
+  });
+
+program
+  .command("status")
+  .description("Check the status of the JIRA server")
+  .action(async () => {
+    await checkStatusCommand();
   });
 
 program
