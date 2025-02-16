@@ -45,8 +45,6 @@ export async function setupConfig(options: any) {
             } else if (action === 'delete') {
                 options.reset = true;
                 return await setupConfig(options);
-            } else if (action === 'create') {
-                return;
             }
         }
 

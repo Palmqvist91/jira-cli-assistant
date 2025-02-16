@@ -4,8 +4,7 @@ Jira CLI Assistant is a command-line tool for interacting with the Jira API. It 
 
 ## Release notes (1.0.15)
 
-- Added `jira status` command to check JIRA profile status.
-- Refactor CLI command syntax to use verb first. e.g. `jira list projects` instead of `jira projects list`.
+- Fix: Set up new config profile is now working again.
 
 ## Features
 
