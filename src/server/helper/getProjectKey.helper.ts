@@ -11,14 +11,15 @@ export async function getProjectKeyHelper(projectKey?: string): Promise<string> 
     }
 
     if (projectKey) {
-        const projectExists = projects.some((project: any) => project.key === projectKey);
+        const upperProjectKey = projectKey.toUpperCase();
+        const projectExists = projects.some((project: any) => project.key === upperProjectKey);
 
         if (!projectExists) {
-            console.error(`🚫 Project KEY "${projectKey}" does not exist.`);
+            console.error(`🚫 Project KEY "${upperProjectKey}" does not exist.`);
             console.log("Please select from available projects:");
             return promptForProject(projects);
         }
-        return projectKey;
+        return upperProjectKey;
     } else {
         console.log("❓ No project KEY provided. Please select a project:");
         return promptForProject(projects);

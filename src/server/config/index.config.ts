@@ -107,7 +107,6 @@ export async function setupConfig(options: any) {
                 choices: profiles
             }]);
 
-            // Spara aktiv profil
             fs.writeFileSync(activeProfilePath, profile);
             console.log(chalk.green(`✅ Switched to profile: ${profile}`));
             return;

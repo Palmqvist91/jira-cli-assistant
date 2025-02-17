@@ -4,7 +4,7 @@ Jira CLI Assistant is a command-line tool for interacting with the Jira API. It 
 
 ## Release notes (1.0.16)
 
-- Fix: Set up new config profile is now working again.
+- Update: projectkey and issuekey is not case sensitive anymore.
 
 ## Features
 
