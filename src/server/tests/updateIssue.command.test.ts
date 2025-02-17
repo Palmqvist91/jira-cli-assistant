@@ -119,7 +119,7 @@ describe('updateIssueCommand', () => {
 
         // Assert
         expect(mockConsoleError).toHaveBeenCalledWith(
-            '🚫 Could not update issue:',
+            '🚫 Could not fetch issue TEST-1:',
             mockError
         );
     });

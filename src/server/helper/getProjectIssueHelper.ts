@@ -6,14 +6,16 @@ export async function getProjectIssueHelper(jiraService: JiraService, issueKey: 
         return null;
     }
 
-    let currentIssue = await jiraService.fetchSingleIssue(issueKey);
-    if (!currentIssue) {
-        console.error(`🚫 Issue "${issueKey}" does not exist.`);
+    const upperIssueKey = issueKey.toUpperCase();
+    try {
+        const issue = await jiraService.fetchSingleIssue(upperIssueKey);
+        if (!issue) {
+            console.error(`🚫 Issue ${upperIssueKey} not found.`);
+            return null;
+        }
+        return { issue };
+    } catch (error) {
+        console.error(`🚫 Could not fetch issue ${upperIssueKey}:`, error);
         return null;
     }
-
-    return {
-        issue: currentIssue,
-        key: issueKey
-    };
 }
