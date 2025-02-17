@@ -63,10 +63,10 @@ export class JiraService {
 
     async fetchSingleIssue(issueKey: string) {
         try {
-            const response = await this.client.get(`/rest/api/3/issue/${issueKey}`);
+            const response = await this.client.get(`/rest/api/3/issue/${issueKey.toUpperCase()}`);
             return response.data;
         } catch (error) {
-            console.error(`🚫 Could not fetch issue ${issueKey}:`);
+            console.error(`🚫 Could not fetch issue ${issueKey.toUpperCase()}:`);
         }
     }
 
@@ -93,6 +93,7 @@ export class JiraService {
 
     async updateIssue(issueKey: string, summary: string, status: string, assignee: string) {
         try {
+            const upperIssueKey = issueKey.toUpperCase();
             const payload = {
                 fields: {
                     summary,
@@ -100,9 +101,9 @@ export class JiraService {
                 },
             };
 
-            await this.client.put(`/rest/api/3/issue/${issueKey}`, payload);
+            await this.client.put(`/rest/api/3/issue/${upperIssueKey}`, payload);
 
-            const transitionsResponse = await this.client.get(`/rest/api/3/issue/${issueKey}/transitions`);
+            const transitionsResponse = await this.client.get(`/rest/api/3/issue/${upperIssueKey}/transitions`);
             const transitions = transitionsResponse.data.transitions;
             const transition = transitions.find((t: any) => t.to.name === status);
 
@@ -110,11 +111,11 @@ export class JiraService {
                 throw new Error(`Status '${status}' is not a valid transition for this issue.`);
             }
 
-            await this.client.post(`/rest/api/3/issue/${issueKey}/transitions`, {
+            await this.client.post(`/rest/api/3/issue/${upperIssueKey}/transitions`, {
                 transition: { id: transition.id }
             });
 
-            return { message: `Issue ${issueKey} updated successfully.` };
+            return { message: `Issue ${upperIssueKey} updated successfully.` };
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 console.error("🚫 Could not update issue:", error.response.data);
@@ -127,7 +128,7 @@ export class JiraService {
 
     async deleteIssue(issueKey: string) {
         try {
-            const response = await this.client.delete(`/rest/api/3/issue/${issueKey}`);
+            const response = await this.client.delete(`/rest/api/3/issue/${issueKey.toUpperCase()}`);
             return response.data;
         } catch (error) {
             throw new Error(`Could not delete issue: ${(error as Error).message}`);
@@ -136,7 +137,7 @@ export class JiraService {
 
     async addComment(issueKey: string, comment: string) {
         try {
-            const response = await this.client.post(`/rest/api/3/issue/${issueKey}/comment`, {
+            const response = await this.client.post(`/rest/api/3/issue/${issueKey.toUpperCase()}/comment`, {
                 body: comment,
             });
             return response.data;
@@ -163,7 +164,7 @@ export class JiraService {
     async getAssignableUsers(issueKey: string) {
         try {
             const response = await this.client.get(`/rest/api/3/user/assignable/search`, {
-                params: { issueKey }
+                params: { issueKey: issueKey.toUpperCase() }
             });
             return response.data.map((user: any) => ({
                 name: user.displayName,
