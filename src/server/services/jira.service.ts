@@ -148,7 +148,8 @@ export class JiraService {
 
     async getProjectStatuses(projectKey: string): Promise<string[]> {
         try {
-            const response = await this.client.get<{ statuses: { name: string }[] }[]>(`/rest/api/3/project/${projectKey}/statuses`, {
+            const upperProjectKey = projectKey.toUpperCase();
+            const response = await this.client.get<{ statuses: { name: string }[] }[]>(`/rest/api/3/project/${upperProjectKey}/statuses`, {
                 headers: { 'Accept': 'application/json' }
             });
             const statuses = response.data
