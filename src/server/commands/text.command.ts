@@ -1,5 +1,7 @@
 import chalk from "chalk";
 
+// TODO: Add help text for each command
+
 export async function helpText() {
   console.log(`
                     ${chalk.bold('Welcome to Jira CLI Assistant!')} 🚀

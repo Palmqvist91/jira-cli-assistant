@@ -16,6 +16,8 @@ export async function listProjectSprintsCommand(projectKey: string) {
             return;
         }
 
+        console.log(sprints);
+
         const headers = ['Index', 'Name', 'State', 'Start Date', 'End Date'];
         const columnWidths = [10, 30, 15, 20, 20];
 

@@ -65,6 +65,8 @@ export async function setupConfig(options: any) {
                 }
             ]);
 
+            console.log(chalk.red(`Are you sure you want to delete profile '${selectedProfile}'?`));
+
             const { confirm } = await inquirer.prompt([
                 {
                     type: 'confirm',
@@ -118,6 +120,8 @@ export async function setupConfig(options: any) {
                 console.log(chalk.red(`❌ Configuration profile '${options.switch}' not found.`));
                 return;
             }
+
+            console.log(chalk.red(`Are you sure you want to switch to profile '${options.switch}'?`));
 
             fs.unlinkSync(configFilePath);
             fs.symlinkSync(configPath, configFilePath);
