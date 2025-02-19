@@ -1,17 +1,21 @@
-name: Publish to npm
+name: Publish to npm & AI PR Review Bot
 
 on:
   workflow_dispatch:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize]
 
 permissions:
   contents: write
   packages: write
+  pull-requests: write
 
 jobs:
   publish:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
@@ -44,13 +48,8 @@ jobs:
       - name: Bump version (patch) and push
         if: success()
         run: |
-          # Get new version number
           NEW_VERSION=$(npm version patch --no-git-tag-version)
-          
-          # Update version in README.md
           sed -i "s/## Release notes ([0-9]\+\.[0-9]\+\.[0-9]\+)/## Release notes (${NEW_VERSION/v/})/g" README.md
-          
-          # Commit both package.json and README.md changes
           git add package.json README.md
           git commit -m "chore(release): ${NEW_VERSION} [skip ci]"
           git tag ${NEW_VERSION}
@@ -61,3 +60,34 @@ jobs:
         run: npm publish --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  ai_pr_review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clone PR Review Bot
+        run: git clone https://github.com/dittnamn/ai-pr-review-bot.git ./pr-bot
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: cd ./pr-bot && npm install
+
+      - name: Build PR Review Bot
+        run: cd ./pr-bot && npm run build
+
+      - name: Run AI PR Review
+        env:
+          GH_APP_ID: ${{ secrets.GH_APP_ID }}
+          GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_OWNER: ${{ github.repository_owner }}
+          GITHUB_REPO: ${{ github.event.repository.name }}
+        run: cd ./pr-bot && node dist/index.js ${{ github.event.pull_request.number }}
